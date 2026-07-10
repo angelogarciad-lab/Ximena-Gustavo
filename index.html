@@ -897,28 +897,30 @@
     }
 
     try {
-      // Llamada directa a Google Apps Script sin proxies
       const res = await fetch(APPS_SCRIPT_URL);
       if (!res.ok) throw new Error('Error en la red');
       
       const data = await res.json();
       
-      if (!data || data.length === 0) {
+      // Filtramos cualquier registro totalmente vacío que se haya colado
+      const comentariosValidos = data.filter(c => c.nombre || c.mensaje);
+      
+      if (!comentariosValidos || comentariosValidos.length === 0) {
         container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">Aún no hay felicitaciones. ¡Sé el primero en escribir!</p>';
         return;
       }
 
-      // Los ordenamos para que salgan los más NUEVOS arriba
-      data.reverse();
+      // Los ordenamos para que el último enviado aparezca al principio de la lista
+      comentariosValidos.reverse();
 
       container.innerHTML = '';
-      data.forEach(c => {
+      comentariosValidos.forEach(c => {
         const card = document.createElement('div');
         card.className = 'comment-card';
         card.innerHTML = `
           <div class="comment-header">
             <span class="comment-author">${c.nombre || 'Anónimo'}</span>
-            <span class="comment-date">${c.fecha || ''}</span>
+            <span class="comment-date">📅 ${c.fecha || ''}</span>
           </div>
           <p class="comment-text">${c.mensaje || ''}</p>
         `;
@@ -926,7 +928,7 @@
       });
     } catch(e) {
       console.error("Error al cargar comentarios:", e);
-      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">No se pudieron cargar los mensajes de forma automática. Refresca la página.</p>';
+      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">No se pudieron cargar los mensajes. Refresca la página.</p>';
     }
   }
 
