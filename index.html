@@ -398,7 +398,7 @@
     <div class="detail-block">
       <p class="detail-label">📅 Fecha del Sacramento</p>
       <p class="detail-value">Sábado, 25 de Julio de 2026</p>
-      <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Primera+Comuni%C3%B3n+-+Ximena+y+Gustavo&dates=20260725T100000/20260725T140000&details=Recuerdo+digital+de+la+Primera+Comuni%C3%B3n+de+Ximena+y+Gustavo.&location=Tulsa,+Oklahoma" target="_blank" class="btn-calendar">📅 Agendar evento</a>
+      
     </div>
     <div class="detail-block">
       <p class="detail-label">📍 Lugar</p>
@@ -479,35 +479,33 @@
     document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
   }, 1000);
 
-  // NUEVA ANIMACIÓN: Lanzamiento de Confeti Elegante (Dorado y Blanco)
+  // FUNCIÓN PARA DISPARAR UNA RÁFAGA DE CONFETI DORADO Y BLANCO
+  function dispararRafagaConfeti() {
+    // Ráfaga Izquierda
+    confetti({
+      particleCount: 102,
+      angle: 60,
+      spread: 45,
+      origin: { x: 0, y: 0.5 },
+      colors: ['#c5a059', '#ffffff', '#fdfbf7']
+    });
+    // Ráfaga Derecha
+    confetti({
+      particleCount: 102,
+      angle: 120,
+      spread: 45,
+      origin: { x: 1, y: 0.5 },
+      colors: ['#c5a059', '#ffffff', '#fdfbf7']
+    });
+  }
+
+  // INICIO AUTOMÁTICO Y REPETICIÓN CADA 5 SEGUNDOS
   window.addEventListener('DOMContentLoaded', () => {
-    setTimeout(() => {
-      var duration = 2.5 * 1000;
-      var end = Date.now() + duration;
+    // Primer disparo a los 1.5 segundos de abrir la página
+    setTimeout(dispararRafagaConfeti, 1500);
 
-      (function frame() {
-        // Lanza confeti desde la izquierda
-        confetti({
-          particleCount: 2,
-          angle: 60,
-          spread: 55,
-          origin: { x: 0, y: 0.4 },
-          colors: ['#c5a059', '#ffffff', '#fdfbf7']
-        });
-        // Lanza confeti desde la derecha
-        confetti({
-          particleCount: 2,
-          angle: 120,
-          spread: 55,
-          origin: { x: 1, y: 0.4 },
-          colors: ['#c5a059', '#ffffff', '#fdfbf7']
-        });
-
-        if (Date.now() < end) {
-          requestAnimationFrame(frame);
-        }
-      }());
-    }, 1500); // Se dispara 1.5 segundos después de que la tarjeta entra en pantalla
+    // Bucle para repetir el disparo automáticamente cada 5000 milisegundos (5 segundos)
+    setInterval(dispararRafagaConfeti, 5000);
   });
 </script>
 
