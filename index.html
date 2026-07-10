@@ -125,7 +125,7 @@
   }
 
   /* ---------------------------------------------------------- */
-  /* RETRATOS EN VENTANAL                                        */
+  /* RETRATOS EN VENTANAL                                       */
   /* ---------------------------------------------------------- */
   .twins-wrapper {
     display: flex;
@@ -164,10 +164,9 @@
     font-family: 'Cormorant Garamond', serif;
     font-size: 21px;
     font-weight: 600;
-    color: var(--ink);
+    color: var(--dark-blue);
     letter-spacing: 0.5px;
   }
-
 
   /* Contador Regresivo Estilizado */
   .countdown-container {
@@ -283,8 +282,7 @@
     line-height: 1.4;
   }
 
-
- /* ---------------------------------------------------------- */
+  /* ---------------------------------------------------------- */
   /* RECUERDO ROTATIVO (foto única desde Google Drive)            */
   /* ---------------------------------------------------------- */
   .preview-section { margin-bottom: 30px; }
@@ -292,7 +290,7 @@
     font-size: 10.5px;
     text-transform: uppercase;
     letter-spacing: 3px;
-    color: var(--wine);
+    color: var(--gold);
     font-weight: 600;
     margin-bottom: 14px;
   }
@@ -305,7 +303,7 @@
     border-radius: 10px;
     overflow: hidden;
     border: 1px solid var(--gold-light);
-    background: var(--parchment);
+    background: #f1f2f6;
     box-shadow: 0 16px 30px rgba(182, 138, 78, 0.18);
   }
   .memory-frame img {
@@ -329,17 +327,16 @@
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 13.5px;
-    color: var(--ink-soft);
+    color: #a4b0be;
   }
   .preview-note {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
     font-size: 13.5px;
-    color: var(--ink-soft);
+    color: #a4b0be;
   }
-
-	
-/* Estilos de los controles del Recuerdo Rotativo */
+  
+  /* Estilos de los controles del Recuerdo Rotativo */
   .slider-controls {
     display: flex;
     justify-content: center;
@@ -375,7 +372,7 @@
   .btn-control:active {
     transform: translateY(0);
   }
-  
+    
   /* Botón de play/pausa un poco más destacado */
   #playPauseBtn {
     width: 50px;
@@ -457,7 +454,7 @@
     border: 2px solid var(--gold);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
-  
+    
   .audio-control:hover {
     transform: scale(1.1);
   }
@@ -545,6 +542,7 @@
       <p class="detail-value">Ángel García Durán y Rosa Elena García Saldivar</p>
     </div>
   </div>
+
   <div class="preview-section">
     <p class="preview-label">Un vistazo a nuestro día</p>
     <div class="memory-frame" id="memoryFrame">
@@ -553,13 +551,15 @@
       <p class="memory-status" id="memoryStatus">Cargando recuerdos…</p>
     </div>
     <p class="preview-note">Esta foto va cambiando con toda la galería completa.</p>
-	<!-- NUEVO: Botones de control manual -->
+    
+    <!-- Botones de control manual -->
     <div class="slider-controls">
       <button class="btn-control" id="prevBtn" title="Anterior">⏮️</button>
       <button class="btn-control" id="playPauseBtn" title="Pausar / Reproducir">⏸️</button>
       <button class="btn-control" id="nextBtn" title="Siguiente">⏭️</button>
     </div>
   </div>
+
   <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery" target="_blank">📷 Ver Galería de Fotos</a>
   
   <p class="footer-thanks">Gracias por acompañarnos en este día tan especial..</p>
@@ -626,19 +626,13 @@
   }, 1000);
 
 
-// ---------------------------------------------------------------
+  // ---------------------------------------------------------------
   // RECUERDO ROTATIVO — trae TODAS las fotos de la carpeta de Drive
-  // y las va mostrando una por una en bucle, sin importar cuántas sean.
   // ---------------------------------------------------------------
 
-  // 1) Pega aquí tu API key de Google Cloud (restringida por dominio y a la Drive API)
   const DRIVE_API_KEY = 'AIzaSyAG7iRdGBfNcACAGOmQ9vG7hD2Z8b_tE_k';
-  // 2) ID de la carpeta (ya tomado del link que compartiste)
   const DRIVE_FOLDER_ID = '1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi';
-  // 3) Cada cuánto cambia la foto (milisegundos)
   const ROTATE_MS = 5000;
-  // 4) Cuánto tiempo se reutiliza la lista guardada en el celular antes de volver a pedirla (minutos)
-  const CACHE_MINUTES = 30;
 
   async function obtenerFotosDeCarpeta(folderId, apiKey) {
     let archivos = [];
@@ -689,7 +683,7 @@
       console.error("Error leyendo caché inicial:", e);
     }
 
-    // 2. Si ya teníamos fotos, las mostramos DE INMEDIATO para no hacer esperar
+    // 2. Si ya teníamos fotos, las mostramos DE INMEDIATO
     if (fotos.length > 0) {
       status.style.display = 'none';
       imgA.src = urlFoto(fotos[0].id);
@@ -697,12 +691,11 @@
       if (fotos.length > 1) comenzarBucle();
     }
 
-    // 3. Traer la lista real de Drive (sirve para el primer inicio y para actualizar cambios)
+    // 3. Traer la lista real de Drive en segundo plano
     try {
       const fotosNuevas = await obtenerFotosDeCarpeta(DRIVE_FOLDER_ID, DRIVE_API_KEY);
       
       if (fotosNuevas && fotosNuevas.length > 0) {
-        // Detectar si la lista cambió o si es la primera vez que descargamos
         const esPrimerInicio = fotos.length === 0;
         const cambioLaLista = esPrimerInicio || 
                               fotos.length !== fotosNuevas.length || 
@@ -712,8 +705,8 @@
           fotos = fotosNuevas;
           localStorage.setItem(cacheKey, JSON.stringify(fotos));
 
-          // Si es el primer inicio, quitamos el "Cargando..." y montamos la imagen de golpe
-          if (esPrimerInicio) {
+          // Forzar renderizado si estaba vacío el visor
+          if (esPrimerInicio || status.style.display !== 'none') {
             status.style.display = 'none';
             imgA.src = urlFoto(fotos[0].id);
             imgA.classList.add('active');
@@ -725,19 +718,18 @@
       console.error("Error validando actualizaciones de Drive:", e);
     }
 
-    // 4. Si después de intentar leer el caché y consultar Drive seguimos en cero, mostramos error
+    // 4. Si después de todo sigue vacío
     if (!fotos || fotos.length === 0) {
       status.textContent = 'Aún no hay fotos disponibles — vuelve a intentarlo más tarde.';
       return;
     }
 
-    // Ocultar flechas si solo hay una foto en total
     if (fotos.length === 1) {
       ocultarControles();
       return;
     }
 
-    // --- Funciones de control de flujo y renderizado ---
+    // --- Funciones internas ---
     function cambiarFoto(direccion = 1) {
       if (!fotos || fotos.length === 0) return;
       index = (index + direccion + fotos.length) % fotos.length;
@@ -770,7 +762,7 @@
       btnNext.style.display = 'none';
     }
 
-    // --- Oyentes de eventos para los botones manuales ---
+    // --- Oyentes de eventos manuales ---
     btnPlayPause.addEventListener('click', function() {
       if (enReproduccion) {
         detenerBucle();
@@ -796,25 +788,18 @@
     });
   }
 
-    btnPrev.addEventListener('click', function() {
-      if (enReproduccion) detenerBucle();
-      cambiarFoto(-1);
-      if (enReproduccion) comenzarBucle();
-    });
-  }
-
   window.addEventListener('DOMContentLoaded', iniciarRecuerdoRotativo);
 
-  // FUNCIÓN PARA DISPARAR UNA RÁFAGA DE CONFETI DORADO Y BLANCO
+  // Confeti dorado y blanco
   function dispararRafagaConfeti() {
-    confetti({
+    window.confetti({
       particleCount: 102,
       angle: 60,
       spread: 45,
       origin: { x: 0, y: 0.5 },
       colors: ['#c5a059', '#ffffff', '#fdfbf7']
     });
-    confetti({
+    window.confetti({
       particleCount: 102,
       angle: 120,
       spread: 45,
