@@ -679,7 +679,7 @@
     let index = 0;
     let mostrandoA = true;
 
-    // 1. Intentar cargar INSTANTÁNEAMENTE lo que ya esté guardado en el teléfono
+    // 1. Intentar cargar lo que ya esté guardado en el teléfono
     try {
       const cacheado = localStorage.getItem(cacheKey);
       if (cacheado) {
@@ -689,7 +689,7 @@
       console.error("Error leyendo caché inicial:", e);
     }
 
-    // 2. Si ya teníamos fotos guardadas, las mostramos de inmediato para eliminar esperas
+    // 2. Si ya teníamos fotos, las mostramos DE INMEDIATO para no hacer esperar
     if (fotos.length > 0) {
       status.style.display = 'none';
       imgA.src = urlFoto(fotos[0].id);
@@ -697,41 +697,47 @@
       if (fotos.length > 1) comenzarBucle();
     }
 
-    // 3. OPTIMIZACIÓN ACTIVA: Validar en segundo plano si la carpeta de Drive cambió
+    // 3. Traer la lista real de Drive (sirve para el primer inicio y para actualizar cambios)
     try {
       const fotosNuevas = await obtenerFotosDeCarpeta(DRIVE_FOLDER_ID, DRIVE_API_KEY);
       
-      // Comparamos si la cantidad de fotos o los IDs cambiaron
-      const cambioLaLista = fotos.length !== fotosNuevas.length || 
-                            JSON.stringify(fotos.map(f => f.id)) !== JSON.stringify(fotosNuevas.map(f => f.id));
+      if (fotosNuevas && fotosNuevas.length > 0) {
+        // Detectar si la lista cambió o si es la primera vez que descargamos
+        const esPrimerInicio = fotos.length === 0;
+        const cambioLaLista = esPrimerInicio || 
+                              fotos.length !== fotosNuevas.length || 
+                              JSON.stringify(fotos.map(f => f.id)) !== JSON.stringify(fotosNuevas.map(f => f.id));
 
-      if (cambioLaLista && fotosNuevas.length > 0) {
-        fotos = fotosNuevas;
-        localStorage.setItem(cacheKey, JSON.stringify(fotos)); // Guardamos la nueva lista
+        if (cambioLaLista) {
+          fotos = fotosNuevas;
+          localStorage.setItem(cacheKey, JSON.stringify(fotos));
 
-        // Si la pantalla estaba vacía ("Cargando..."), inicializamos el contenedor
-        if (status.style.display !== 'none') {
-          status.style.display = 'none';
-          imgA.src = urlFoto(fotos[0].id);
-          imgA.classList.add('active');
-          if (fotos.length > 1 && !intervalId) comenzarBucle();
+          // Si es el primer inicio, quitamos el "Cargando..." y montamos la imagen de golpe
+          if (esPrimerInicio) {
+            status.style.display = 'none';
+            imgA.src = urlFoto(fotos[0].id);
+            imgA.classList.add('active');
+            if (fotos.length > 1) comenzarBucle();
+          }
         }
       }
     } catch (e) {
-      console.error("Error validando actualizaciones de Drive de fondo:", e);
-      // Si falla el internet o la API, el usuario ni se entera porque sigue viendo las fotos del caché
-      if (fotos.length === 0) {
-        status.textContent = 'Aún no hay fotos disponibles — vuelve a intentarlo más tarde.';
-        return;
-      }
+      console.error("Error validando actualizaciones de Drive:", e);
     }
 
+    // 4. Si después de intentar leer el caché y consultar Drive seguimos en cero, mostramos error
+    if (!fotos || fotos.length === 0) {
+      status.textContent = 'Aún no hay fotos disponibles — vuelve a intentarlo más tarde.';
+      return;
+    }
+
+    // Ocultar flechas si solo hay una foto en total
     if (fotos.length === 1) {
       ocultarControles();
       return;
     }
 
-    // Funciones de control de flujo y renderizado
+    // --- Funciones de control de flujo y renderizado ---
     function cambiarFoto(direccion = 1) {
       if (!fotos || fotos.length === 0) return;
       index = (index + direccion + fotos.length) % fotos.length;
@@ -764,7 +770,7 @@
       btnNext.style.display = 'none';
     }
 
-    // Oyentes de eventos para los botones físicos añadidos
+    // --- Oyentes de eventos para los botones manuales ---
     btnPlayPause.addEventListener('click', function() {
       if (enReproduccion) {
         detenerBucle();
