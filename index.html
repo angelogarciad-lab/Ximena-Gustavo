@@ -6,6 +6,9 @@
 <title>Nuestra Primera Comunión - Ximena & Gustavo</title>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
 
+<!-- Librería externa para la animación de confeti premium -->
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+
 <style>
   :root {
     --gold: #c5a059;
@@ -31,9 +34,9 @@
     background-color: #f3ece0; 
     background-image: radial-gradient(rgba(197, 160, 89, 0.25) 1.5px, transparent 0);
     background-size: 24px 24px;
+    overflow-x: hidden;
   }
 
-  /* Animación de entrada para la tarjeta */
   .card-container {
     background: #ffffff;
     max-width: 440px;
@@ -46,7 +49,6 @@
     animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
-  /* Marco interno fino */
   .card-container::before {
     content: '';
     position: absolute;
@@ -98,7 +100,7 @@
   .twins-wrapper {
     display: flex;
     justify-content: space-around;
-    gap: 20px;
+    gap: 10px;
     margin-bottom: 30px;
   }
 
@@ -107,8 +109,8 @@
   }
 
   .avatar-frame {
-    width: 145px;
-    height: 145px;
+    width: 150px;  
+    height: 150px; 
     border-radius: 50%;
     margin: 0 auto 14px auto;
     border: 2px solid var(--gold);
@@ -119,9 +121,8 @@
     transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
 
-  /* Animación interactiva en las fotos */
   .avatar-frame:hover {
-    transform: scale(1.08) rotate(2deg);
+    transform: scale(1.06) rotate(2deg);
     box-shadow: 0 15px 30px rgba(197, 160, 89, 0.3);
   }
 
@@ -140,9 +141,8 @@
     letter-spacing: 0.5px;
   }
 
-  /* Contador Regresivo */
   .countdown-container {
-    margin: 20px 0;
+    margin: 25px 0;
   }
   .countdown-label {
     font-size: 10px;
@@ -155,13 +155,13 @@
   .countdown-timer {
     display: flex;
     justify-content: center;
-    gap: 12px;
+    gap: 10px;
   }
   .countdown-item {
     background: var(--gold-light);
-    padding: 8px 12px;
+    padding: 8px 10px;
     border-radius: 12px;
-    min-width: 60px;
+    min-width: 58px;
     border: 1px solid rgba(197, 160, 89, 0.15);
   }
   .countdown-number {
@@ -194,7 +194,7 @@
 
   .details-list {
     text-align: left;
-    margin-bottom: 35px;
+    margin-bottom: 25px;
     background: #fafbfc;
     padding: 22px 20px;
     border-radius: 20px;
@@ -240,7 +240,29 @@
     line-height: 1.4;
   }
 
-  /* Botón con Destello Dorado (Shine Effect) */
+  .btn-calendar {
+    display: inline-block;
+    background: none;
+    border: 1px dashed var(--gold);
+    color: var(--gold);
+    padding: 8px 16px;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    border-radius: 20px;
+    cursor: pointer;
+    margin-top: 5px;
+    align-self: flex-start;
+    text-decoration: none;
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  .btn-calendar:hover {
+    background: var(--gold);
+    color: #ffffff;
+    border-style: solid;
+  }
+
   .btn-gallery {
     display: inline-block;
     width: 100%;
@@ -292,7 +314,6 @@
     text-transform: uppercase;
   }
 
-  /* Reproductor de Música Flotante */
   .audio-control {
     position: fixed;
     bottom: 20px;
@@ -312,11 +333,7 @@
     border: 2px solid var(--gold);
     transition: transform 0.3s;
   }
-  .audio-control:active {
-    transform: scale(0.9);
-  }
 
-  /* Animaciones CSS */
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(30px); }
     to { opacity: 1; transform: translateY(0); }
@@ -333,10 +350,8 @@
 </head>
 <body>
 
-<!-- Elemento del botón de música flotante -->
 <div class="audio-control" id="musicBtn" onclick="toggleMusic()">🎵</div>
 
-<!-- Archivo de música local conectado -->
 <audio id="bgMusic" loop>
   <source src="Comunion.mp3" type="audio/mpeg">
 </audio>
@@ -363,7 +378,6 @@
     </div>
   </div>
 
-  <!-- Caja del Contador -->
   <div class="countdown-container" id="countdownBox">
     <p class="countdown-label">Falta muy poco</p>
     <div class="countdown-timer">
@@ -384,6 +398,7 @@
     <div class="detail-block">
       <p class="detail-label">📅 Fecha del Sacramento</p>
       <p class="detail-value">Sábado, 25 de Julio de 2026</p>
+      <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Primera+Comuni%C3%B3n+-+Ximena+y+Gustavo&dates=20260725T100000/20260725T140000&details=Recuerdo+digital+de+la+Primera+Comuni%C3%B3n+de+Ximena+y+Gustavo.&location=Tulsa,+Oklahoma" target="_blank" class="btn-calendar">📅 Agendar evento</a>
     </div>
     <div class="detail-block">
       <p class="detail-label">📍 Lugar</p>
@@ -405,12 +420,10 @@
   <p class="footer-family">Familia Muñoz García</p>
 </div>
 
-<!-- Lógica JavaScript Unificada -->
 <script>
   var music = document.getElementById("bgMusic");
   var btn = document.getElementById("musicBtn");
 
-  // Control manual por si deciden pausar o reproducir de nuevo
   function toggleMusic() {
     if (music.paused) {
       music.play();
@@ -421,14 +434,13 @@
     }
   }
 
-  // Activa la canción al detectar la primera acción de interacción real del invitado
   function iniciarMusicaAutomatica() {
     if (music.paused) {
       music.play().then(() => {
         btn.innerText = "⏸️";
         removerEscuchadores();
       }).catch(error => {
-        console.log("Reproducción automática limitada por el navegador hasta una acción táctil directa.");
+        console.log("Interacción requerida.");
       });
     }
   }
@@ -466,6 +478,37 @@
     document.getElementById("minutes").innerText = m < 10 ? "0" + m : m;
     document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
   }, 1000);
+
+  // NUEVA ANIMACIÓN: Lanzamiento de Confeti Elegante (Dorado y Blanco)
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+      var duration = 2.5 * 1000;
+      var end = Date.now() + duration;
+
+      (function frame() {
+        // Lanza confeti desde la izquierda
+        confetti({
+          particleCount: 2,
+          angle: 60,
+          spread: 55,
+          origin: { x: 0, y: 0.4 },
+          colors: ['#c5a059', '#ffffff', '#fdfbf7']
+        });
+        // Lanza confeti desde la derecha
+        confetti({
+          particleCount: 2,
+          angle: 120,
+          spread: 55,
+          origin: { x: 1, y: 0.4 },
+          colors: ['#c5a059', '#ffffff', '#fdfbf7']
+        });
+
+        if (Date.now() < end) {
+          requestAnimationFrame(frame);
+        }
+      }());
+    }, 1500); // Se dispara 1.5 segundos después de que la tarjeta entra en pantalla
+  });
 </script>
 
 </body>
