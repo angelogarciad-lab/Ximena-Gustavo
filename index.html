@@ -738,6 +738,7 @@
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBjt3-UZvdoW1gSeeeDvupb3od4am0zvJUHaPhIjyUsn2Mmw-6mIGycwzRwU6pv1WHoA/exec';
 
 
+
   async function obtenerFotosDeCarpeta(folderId, apiKey) {
     let archivos = [];
     let pageToken = '';
@@ -890,21 +891,25 @@
   // ---------------------------------------------------------------
   async function cargarComentarios() {
     const container = document.getElementById('commentsContainer');
-    if (APPS_SCRIPT_URL === 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT') {
+    if (APPS_SCRIPT_URL === 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT' || APPS_SCRIPT_URL === '') {
       container.innerHTML = '<p style="text-align:center; font-size:12px; color:#e74c3c;">Falta configurar la URL de Apps Script en el código.</p>';
       return;
     }
 
     try {
       const res = await fetch(APPS_SCRIPT_URL);
-      const data = await res.json();
+      if (!res.ok) throw new Error('Error en respuesta del servidor');
+      
+      // Leemos primero como texto para evitar fallos de formato
+      const textData = await res.text();
+      const data = JSON.parse(textData);
       
       if (!data || data.length === 0) {
         container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">Aún no hay felicitaciones. ¡Sé el primero en escribir!</p>';
         return;
       }
 
-      // Los ordenamos al revés para que salgan los más NUEVOS arriba
+      // Los ordenamos para que salgan los más NUEVOS arriba
       data.reverse();
 
       container.innerHTML = '';
@@ -921,8 +926,8 @@
         container.appendChild(card);
       });
     } catch(e) {
-      console.error(e);
-      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be;">No se pudieron cargar los mensajes.</p>';
+      console.error("Error detallado al cargar comentarios:", e);
+      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">No se pudieron cargar los mensajes de forma automática. Refresca la página.</p>';
     }
   }
 
