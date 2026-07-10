@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestra Primera Comunión - Ximena & Gustavo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --gold: #c5a059;
+    --gold-light: #f4efe2;
+    --dark-blue: #1e2d3d;
+    --text-color: #57606f;
+    --bg-color: #f8f9fa;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Montserrat', sans-serif;
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 15px;
+  }
+
+  /* Contenedor optimizado para Smartphone */
+  .card-container {
+    background: #ffffff;
+    max-width: 440px;
+    width: 100%;
+    border-radius: 24px;
+    padding: 35px 25px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.05);
+    text-align: center;
+    border: 1px solid rgba(0,0,0,0.02);
+  }
+
+  .header-accent {
+    width: 50px;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 20px auto;
+  }
+
+  .cross-symbol {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 32px;
+    color: var(--gold);
+    line-height: 1;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 26px;
+    font-weight: 400;
+    letter-spacing: 3px;
+    color: var(--dark-blue);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 2px;
+    color: var(--gold);
+    text-transform: uppercase;
+    margin-bottom: 30px;
+  }
+
+  /* Sección de fotos de los hermanos en paralelo */
+  .twins-wrapper {
+    display: flex;
+    justify-content: space-around;
+    gap: 15px;
+    margin-bottom: 30px;
+  }
+
+  .twin-profile {
+    flex: 1;
+  }
+
+  .avatar-frame {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    margin: 0 auto 12px auto;
+    border: 2px solid var(--gold);
+    padding: 4px;
+    background-color: #fff;
+    box-shadow: 0 8px 20px rgba(197, 160, 89, 0.15);
+    overflow: hidden;
+  }
+
+  .avatar-frame img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+
+  .twin-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--dark-blue);
+    letter-spacing: 1px;
+  }
+
+  /* Frase Espiritual */
+  .quote-section {
+    margin: 25px 0;
+    padding: 20px 15px;
+    background-color: var(--gold-light);
+    border-radius: 16px;
+  }
+
+  .quote-text {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 16px;
+    color: #4a4a4a;
+    line-height: 1.6;
+  }
+
+  /* Detalles del evento con diseño limpio */
+  .details-list {
+    text-align: left;
+    margin-bottom: 30px;
+    background: #fafbfc;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #f1f2f6;
+  }
+
+  .detail-block {
+    margin-bottom: 15px;
+  }
+
+  .detail-block:last-child {
+    margin-bottom: 0;
+  }
+
+  .detail-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #a4b0be;
+    font-weight: 600;
+    margin-bottom: 2px;
+  }
+
+  .detail-value {
+    font-size: 14px;
+    color: var(--dark-blue);
+    font-weight: 500;
+  }
+
+  /* Botón interactivo moderno */
+  .btn-gallery {
+    display: inline-block;
+    width: 100%;
+    background: linear-gradient(135deg, var(--dark-blue), #2c3e50);
+    color: #ffffff;
+    text-decoration: none;
+    padding: 15px;
+    font-size: 12px;
+    font-weight: 600;
+    border-radius: 50px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    box-shadow: 0 10px 20px rgba(30, 45, 61, 0.15);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 25px;
+  }
+
+  .btn-gallery:active {
+    transform: scale(0.98);
+  }
+
+  .footer-thanks {
+    font-size: 13px;
+    color: #95a5a6;
+    margin-bottom: 4px;
+  }
+
+  .footer-family {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--dark-blue);
+    letter-spacing: 1px;
+  }
+</style>
+</head>
+<body>
+
+<div class="card-container">
+  <div class="header-accent"></div>
+  <div class="cross-symbol">†</div>
+  <h1>Recuerdo de nuestra</h1>
+  <h2>Primera Comunión</h2>
+  
+  <div class="twins-wrapper">
+    <div class="twin-profile">
+      <div class="avatar-frame">
+        <img src="ximena.jpg" alt="Ximena">
+      </div>
+      <div class="twin-name">Ximena</div>
+    </div>
+    
+    <div class="twin-profile">
+      <div class="avatar-frame">
+        <img src="gustavo.jpg" alt="Gustavo">
+      </div>
+      <div class="twin-name">Gustavo</div>
+    </div>
+  </div>
+  
+  <div class="quote-section">
+    <p class="quote-text">
+      "Señor, haz que este día sea el inicio de una vida llena de fe, guiada por tu amor y protegida bajo tu luz divina. Que el pan de vida alimente siempre nuestros corazones."
+    </p>
+  </div>
+  
+  <div class="details-list">
+    <div class="detail-block">
+      <p class="detail-label">Fecha del Sacramento</p>
+      <p class="detail-value">Sábado, 25 de Julio de 2026</p>
+    </div>
+    <div class="detail-block">
+      <p class="detail-label">Lugar</p>
+      <p class="detail-value">Tulsa, Oklahoma</p>
+    </div>
+    <div class="detail-block">
+      <p class="detail-label">Padres de Ximena y Gustavo</p>
+      <p class="detail-value">Leobardo Muñoz y Lorena García Saldivar </p>
+    </div>
+    <div class="detail-block">
+      <p class="detail-label">Padrinos de Ximena y Gustavo</p>
+      <p class="detail-value">Ángel García Durán y Rosa Elena García Saldivar</p>
+    </div>
+  </div>
+  
+  <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery" target="_blank">📷 Ver Galería de Fotos</a>
+  
+  <p class="footer-thanks">Gracias por acompañarnos en este día tan especial</p>
+  <p class="footer-family">Familia Muñoz García</p>
+</div>
+
+</body>
+</html>
