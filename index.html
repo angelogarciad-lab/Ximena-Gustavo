@@ -897,12 +897,15 @@
     }
 
     try {
-      const res = await fetch(APPS_SCRIPT_URL);
-      if (!res.ok) throw new Error('Error en respuesta del servidor');
+      // Usamos el proxy público de allorigins para saltarnos las restricciones de CORS de Google
+      const proxyUrl = `https://api.allorigins.win/get?url=${encodeURIComponent(APPS_SCRIPT_URL)}`;
       
-      // Leemos primero como texto para evitar fallos de formato
-      const textData = await res.text();
-      const data = JSON.parse(textData);
+      const res = await fetch(proxyUrl);
+      if (!res.ok) throw new Error('Error en el proxy');
+      
+      const responseData = await res.json();
+      // El contenido real viene dentro de la propiedad .contents como texto plano
+      const data = JSON.parse(responseData.contents);
       
       if (!data || data.length === 0) {
         container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">Aún no hay felicitaciones. ¡Sé el primero en escribir!</p>';
@@ -926,7 +929,7 @@
         container.appendChild(card);
       });
     } catch(e) {
-      console.error("Error detallado al cargar comentarios:", e);
+      console.error("Error con proxy:", e);
       container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">No se pudieron cargar los mensajes de forma automática. Refresca la página.</p>';
     }
   }
