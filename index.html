@@ -3,148 +3,126 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Primera Comunión · Ximena & Gustavo</title>
-<meta name="description" content="Un recuerdo digital de la Primera Comunión de Ximena y Gustavo — revive las fotos de este día tan especial.">
-<meta property="og:title" content="Primera Comunión · Ximena & Gustavo">
-<meta property="og:description" content="Un recuerdo digital de la Primera Comunión de Ximena y Gustavo — revive las fotos de este día tan especial.">
-<meta property="og:image" content="portada.jpg">
-<meta property="og:type" content="website">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Primera Comunión · Ximena & Gustavo">
-<meta name="twitter:description" content="Un recuerdo digital de la Primera Comunión de Ximena y Gustavo — revive las fotos de este día tan especial.">
-<meta name="twitter:image" content="portada.jpg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+<title>Nuestra Primera Comunión - Ximena & Gustavo</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500;600&display=swap" rel="stylesheet">
+
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <style>
   :root {
-    /* ---- paleta ---- */
-    --parchment:      #faf6ee;
-    --parchment-deep: #f2e9d8;
-    --ink:             #2c241d;
-    --ink-soft:        #6b6155;
-    --gold:            #b68a4e;
-    --gold-light:      #e8cd9a;
-    --gold-gradient:   linear-gradient(135deg, #9c7439 0%, #e3c483 45%, #b68a4e 100%);
-    --wine:            #7c2d3a;
-    --wine-soft:       rgba(124,45,58,0.12);
+    --gold: #c5a059;
+    --gold-light: #fdfbf7;
+    --gold-gradient: linear-gradient(135deg, #b38f4d 0%, #e5c180 50%, #b38f4d 100%);
+    --dark-blue: #1a2633;
+    --text-color: #5a6575;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-
-  html { scroll-behavior: smooth; }
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
 
   body {
     font-family: 'Montserrat', sans-serif;
-    color: var(--ink-soft);
+    color: var(--text-color);
     display: flex;
     justify-content: center;
-    align-items: flex-start;
+    align-items: center;
     min-height: 100vh;
-    padding: 48px 16px;
+    padding: 30px 15px;
     overflow-x: hidden;
 
     background:
-      radial-gradient(ellipse at top, rgba(230,199,131,0.16), transparent 55%),
-      linear-gradient(rgba(250,246,238,.90), rgba(250,246,238,.94)),
-      url("fondo-iglesia.jpg");
-    background-size: cover, cover, cover;
-    background-position: center, center, center;
-    background-repeat: no-repeat, no-repeat, no-repeat;
-    background-attachment: fixed;
-  }
+        linear-gradient(
+            rgba(255,255,255,.82),
+            rgba(255,255,255,.82)
+        ),
+        radial-gradient(rgba(197,160,89,.12) 1.5px, transparent 0),
+        url("fondo-iglesia.jpg");
 
-  /* ---------------------------------------------------------- */
-  /* CONTENEDOR                                                  */
-  /* ---------------------------------------------------------- */
+    background-size:
+        cover,
+        24px 24px,
+        cover;
+
+    background-position:
+        center,
+        center,
+        center;
+
+    background-repeat:
+        no-repeat,
+        repeat,
+        no-repeat;
+
+    background-attachment: fixed;
+}
+
+  /* Contenedor principal con efecto Glassmorphism y profundidad */
   .card-container {
-    background: #fffefb;
-    max-width: 460px;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    max-width: 450px;
     width: 100%;
-    border-radius: 6px;
-    padding: 56px 34px 44px;
-    box-shadow:
-      0 50px 90px rgba(44, 36, 29, 0.14),
-      0 8px 24px rgba(182, 138, 78, 0.08);
+    border-radius: 40px;
+    padding: 45px 30px;
+    box-shadow: 0 40px 80px rgba(26, 38, 51, 0.12), 0 10px 30px rgba(197, 160, 89, 0.05);
     text-align: center;
     position: relative;
-    animation: fadeInUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: fadeInUp 1.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
+  /* Marco doble elegante */
   .card-container::before {
     content: '';
     position: absolute;
-    top: 12px; left: 12px; right: 12px; bottom: 12px;
-    border: 1px solid var(--gold-light);
-    pointer-events: none;
-  }
-  .card-container::after {
-    content: '';
-    position: absolute;
-    top: 18px; left: 18px; right: 18px; bottom: 18px;
-    border: 1px solid rgba(124,45,58,0.15);
+    top: 14px;
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+    border: 1px solid rgba(197, 160, 89, 0.25);
+    border-radius: 28px;
     pointer-events: none;
   }
 
-  /* ---------------------------------------------------------- */
-  /* ENCABEZADO / MOTIVO DE ROSETÓN                              */
-  /* ---------------------------------------------------------- */
-  .rosette {
-    width: 96px;
-    height: 96px;
-    margin: 0 auto 6px;
-    animation: floatingCross 5s infinite ease-in-out;
+  .header-accent {
+    width: 80px;
+    height: 1.5px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 0 auto 18px auto;
   }
 
-  .eyebrow {
-    font-size: 10.5px;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    color: var(--wine);
-    font-weight: 600;
+  /* Símbolo de cruz flotante con animación constante */
+  .cross-symbol {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 40px;
+    color: var(--gold);
+    line-height: 1;
     margin-bottom: 10px;
+    display: inline-block;
+    animation: floatingCross 4s infinite ease-in-out;
   }
 
   h1 {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 29px;
+    font-size: 30px;
     font-weight: 400;
-    letter-spacing: 2px;
-    color: var(--ink);
+    letter-spacing: 4px;
+    color: var(--dark-blue);
     text-transform: uppercase;
-    line-height: 1.25;
+    margin-bottom: 4px;
   }
 
   h2 {
     font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 40px;
-    font-weight: 500;
-    color: var(--gold);
-    margin: 2px 0 8px;
-  }
-
-  .subnames {
-    font-size: 11px;
+    font-size: 17px;
+    font-weight: 400;
     letter-spacing: 3px;
+    color: var(--gold);
     text-transform: uppercase;
-    color: var(--ink-soft);
-    margin-bottom: 28px;
+    margin-bottom: 35px;
   }
-
-  /* divisor de espigas */
-  .wheat-divider {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin: 0 auto 32px;
-    width: 220px;
-  }
-  .wheat-divider .line { flex: 1; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-light)); }
-  .wheat-divider .line.right { background: linear-gradient(90deg, var(--gold-light), transparent); }
-  .wheat-divider svg { flex-shrink: 0; }
 
   /* ---------------------------------------------------------- */
   /* RETRATOS EN VENTANAL                                        */
@@ -190,111 +168,123 @@
     letter-spacing: 0.5px;
   }
 
-  /* ---------------------------------------------------------- */
-  /* CONTADOR                                                     */
-  /* ---------------------------------------------------------- */
-  .countdown-container { margin: 6px 0 34px; }
+
+  /* Contador Regresivo Estilizado */
+  .countdown-container {
+    margin: 30px 0;
+  }
   .countdown-label {
-    font-size: 10.5px;
+    font-size: 11px;
     text-transform: uppercase;
     letter-spacing: 3px;
-    color: var(--wine);
-    margin-bottom: 14px;
+    color: var(--gold);
+    margin-bottom: 12px;
     font-weight: 600;
   }
-  .countdown-timer { display: flex; justify-content: center; gap: 9px; }
+  .countdown-timer {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
   .countdown-item {
-    background: var(--parchment);
-    padding: 12px 6px;
-    min-width: 62px;
-    border: 1px solid var(--gold-light);
-    transition: transform .3s ease;
+    background: var(--gold-light);
+    padding: 10px 8px;
+    border-radius: 16px;
+    min-width: 65px;
+    border: 1px solid rgba(197, 160, 89, 0.15);
+    box-shadow: 0 5px 15px rgba(197, 160, 89, 0.03);
+    transition: transform 0.3s ease;
   }
-  .countdown-item:hover { transform: translateY(-3px); }
+  .countdown-item:hover {
+    transform: translateY(-3px);
+  }
   .countdown-number {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 600;
-    color: var(--ink);
+    color: var(--dark-blue);
   }
   .countdown-unit {
-    font-size: 8.5px;
-    letter-spacing: 1.5px;
+    font-size: 9px;
     text-transform: uppercase;
-    color: var(--ink-soft);
-    margin-top: 4px;
+    color: #a4b0be;
+    margin-top: 3px;
+    font-weight: 500;
   }
 
-  /* ---------------------------------------------------------- */
-  /* CITA                                                         */
-  /* ---------------------------------------------------------- */
   .quote-section {
-    margin: 0 0 34px;
-    padding: 30px 26px 26px;
-    background: var(--parchment);
-    position: relative;
-    border-top: 1px solid var(--gold-light);
-    border-bottom: 1px solid var(--gold-light);
+    margin: 30px 5px;
+    padding: 24px 22px;
+    background-color: rgba(253, 251, 247, 0.8);
+    border-radius: 20px;
+    border-left: 3px solid var(--gold);
+    box-shadow: inset 0 0 20px rgba(197, 160, 89, 0.02);
   }
-  .quote-mark {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 46px;
-    color: var(--gold);
-    line-height: 1;
-    display: block;
-    margin-bottom: 4px;
-  }
+
   .quote-text {
     font-family: 'Cormorant Garamond', serif;
     font-style: italic;
-    font-size: 17.5px;
-    color: var(--ink);
+    font-size: 17px;
+    color: #444b54;
     line-height: 1.7;
   }
 
-  /* ---------------------------------------------------------- */
-  /* DETALLES                                                     */
-  /* ---------------------------------------------------------- */
+  /* Lista de Detalles en formato Bloques de Lujo */
   .details-list {
     text-align: left;
-    margin-bottom: 32px;
+    margin-bottom: 30px;
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
   }
 
   .detail-block {
-    background: var(--parchment);
-    padding: 16px 18px;
-    border: 1px solid #ece3d2;
-    display: flex;
-    align-items: flex-start;
-    gap: 14px;
+    background: #fafbfc;
+    padding: 18px 20px;
+    border-radius: 18px;
+    border: 1px solid #eef1f5;
     transition: all 0.3s ease;
-  }
-  .detail-block:hover {
-    background: #fffefb;
-    border-color: var(--gold-light);
-    transform: translateX(3px);
-  }
-  .detail-icon { flex-shrink: 0; margin-top: 2px; }
-  .detail-label {
-    font-size: 9.5px;
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    color: var(--wine);
-    font-weight: 600;
-    margin-bottom: 4px;
-  }
-  .detail-value {
-    font-family: 'Cormorant Garamond', serif;
-    font-size: 17px;
-    color: var(--ink);
-    font-weight: 500;
-    line-height: 1.35;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
   }
 
-  /* ---------------------------------------------------------- */
+  .detail-block::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background: var(--gold-gradient);
+    opacity: 0.7;
+  }
+
+  .detail-block:hover {
+    transform: translateX(4px);
+    background: #ffffff;
+    border-color: rgba(197, 160, 89, 0.2);
+    box-shadow: 0 10px 20px rgba(26, 38, 51, 0.04);
+  }
+
+  .detail-label {
+    font-size: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #9aa4b0;
+    font-weight: 600;
+    margin-bottom: 5px;
+  }
+
+  .detail-value {
+    font-size: 15px;
+    color: var(--dark-blue);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+
+ /* ---------------------------------------------------------- */
   /* RECUERDO ROTATIVO (foto única desde Google Drive)            */
   /* ---------------------------------------------------------- */
   .preview-section { margin-bottom: 30px; }
@@ -348,165 +338,129 @@
     color: var(--ink-soft);
   }
 
-  /* ---------------------------------------------------------- */
-  /* BOTÓN GALERÍA                                                */
-  /* ---------------------------------------------------------- */
+
+  /* Botón Principal de Galería con brillo premium */
   .btn-gallery {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
+    display: inline-block;
     width: 100%;
-    background: var(--gold-gradient);
-    color: #fffefb;
+    background: linear-gradient(135deg, var(--dark-blue) 0%, #25364a 100%);
+    color: #ffffff;
     text-decoration: none;
-    padding: 17px;
-    font-size: 11.5px;
+    padding: 18px;
+    font-size: 12px;
     font-weight: 600;
+    border-radius: 50px;
     letter-spacing: 2.5px;
     text-transform: uppercase;
-    box-shadow: 0 14px 28px rgba(182, 138, 78, 0.30);
+    box-shadow: 0 12px 30px rgba(26, 38, 51, 0.25);
     position: relative;
     overflow: hidden;
     transition: all 0.4s ease;
-    margin-bottom: 34px;
+    margin-bottom: 35px;
   }
+
   .btn-gallery::after {
     content: '';
     position: absolute;
-    top: -50%; left: -60%;
-    width: 30%; height: 200%;
-    background: rgba(255,255,255,0.35);
-    transform: rotate(25deg);
-    animation: automaticShine 5s infinite ease-in-out;
-  }
-  .btn-gallery:hover {
-    box-shadow: 0 18px 34px rgba(182, 138, 78, 0.42);
-    transform: translateY(-2px);
+    top: -50%;
+    left: -60%;
+    width: 30%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: rotate(30deg);
+    animation: automaticShine 4s infinite ease-in-out;
   }
 
-  /* ---------------------------------------------------------- */
-  /* PIE                                                          */
-  /* ---------------------------------------------------------- */
-  .footer-ornament { margin: 0 auto 14px; width: 40px; }
-  .footer-thanks {
-    font-family: 'Cormorant Garamond', serif;
-    font-style: italic;
-    font-size: 15px;
-    color: var(--ink-soft);
-    margin-bottom: 6px;
+  .btn-gallery:hover {
+    box-shadow: 0 15px 35px rgba(197, 160, 89, 0.35);
+    transform: translateY(-3px);
   }
-  .footer-family {
+
+  .footer-thanks {
     font-size: 13px;
+    color: #9aa4b0;
+    margin-bottom: 5px;
+    font-style: italic;
+  }
+
+  .footer-family {
+    font-size: 15px;
     font-weight: 600;
-    color: var(--ink);
-    letter-spacing: 2px;
+    color: var(--dark-blue);
+    letter-spacing: 1.5px;
     text-transform: uppercase;
   }
 
-  /* ---------------------------------------------------------- */
-  /* CONTROL DE MÚSICA                                            */
-  /* ---------------------------------------------------------- */
+  /* Control de música flotante elegante */
   .audio-control {
     position: fixed;
-    bottom: 22px; right: 22px;
-    background: var(--ink);
-    color: #fffefb;
-    width: 46px; height: 46px;
+    bottom: 25px;
+    right: 25px;
+    background: var(--dark-blue);
+    color: #ffffff;
+    width: 50px;
+    height: 50px;
     border-radius: 50%;
-    display: flex; justify-content: center; align-items: center;
-    box-shadow: 0 8px 22px rgba(0,0,0,0.28);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
     cursor: pointer;
     z-index: 999;
-    border: 1.5px solid var(--gold);
-    transition: transform 0.3s cubic-bezier(.175,.885,.32,1.275);
+    font-size: 18px;
+    border: 2px solid var(--gold);
+    transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
-  .audio-control:hover { transform: scale(1.08); }
-  .audio-control svg { width: 18px; height: 18px; }
+  
+  .audio-control:hover {
+    transform: scale(1.1);
+  }
 
-  /* ---------------------------------------------------------- */
-  /* KEYFRAMES                                                    */
-  /* ---------------------------------------------------------- */
+  /* KEYFRAMES ANIMACIONES */
   @keyframes fadeInUp {
-    from { opacity: 0; transform: translateY(36px); }
-    to   { opacity: 1; transform: translateY(0); }
+    from { opacity: 0; transform: translateY(40px); }
+    to { opacity: 1; transform: translateY(0); }
   }
   @keyframes automaticShine {
     0% { left: -60%; }
     18%, 100% { left: 130%; }
   }
   @keyframes floatingCross {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-5px); }
+    0%, 100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-6px) scale(1.02); filter: drop-shadow(0 4px 6px rgba(197,160,89,0.3)); }
   }
   @keyframes floatingAvatar {
-    0%, 100% { transform: translateY(0); }
-    50%      { transform: translateY(-4px); }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .rosette, .avatar-frame, .btn-gallery::after, .card-container { animation: none !important; }
-  }
-
-  @media (max-width: 380px) {
-    .card-container { padding: 44px 20px 36px; }
-    .twins-wrapper { gap: 14px; }
-    h2 { font-size: 32px; }
+    0%, 100% { transform: translateY(0) rotate(0deg); }
+    50% { transform: translateY(-5px) rotate(1deg); }
   }
 </style>
 </head>
 <body>
 
-<div class="audio-control" id="musicBtn" onclick="toggleMusic()" aria-label="Reproducir música">
-  <svg id="musicIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
-    <path d="M9 18V5l12-2v13" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="6" cy="18" r="3" stroke-linecap="round" stroke-linejoin="round"/>
-    <circle cx="18" cy="16" r="3" stroke-linecap="round" stroke-linejoin="round"/>
-  </svg>
-</div>
+<div class="audio-control" id="musicBtn" onclick="toggleMusic()">🎵</div>
 
 <audio id="bgMusic" loop>
   <source src="Comunion.mp3" type="audio/mpeg">
 </audio>
 
 <div class="card-container">
-
-  <!-- Rosetón decorativo -->
-  <svg class="rosette" viewBox="0 0 100 100" fill="none">
-    <circle cx="50" cy="50" r="30" stroke="#c9a869" stroke-width="0.8" opacity="0.55"/>
-    <circle cx="50" cy="50" r="21" stroke="#c9a869" stroke-width="0.8" opacity="0.7"/>
-    <g stroke="#c9a869" stroke-width="0.8" opacity="0.6">
-      <line x1="50" y1="20" x2="50" y2="80"/>
-      <line x1="20" y1="50" x2="80" y2="50"/>
-      <line x1="29" y1="29" x2="71" y2="71"/>
-      <line x1="71" y1="29" x2="29" y2="71"/>
-    </g>
-    <path d="M50 33 C46 40 40 42 40 50 C40 58 46 60 50 67 C54 60 60 58 60 50 C60 42 54 40 50 33 Z"
-          fill="#b68a4e"/>
-    <circle cx="50" cy="50" r="3.2" fill="#fffefb"/>
-  </svg>
-
-  <p class="eyebrow">Recuerdo de nuestra</p>
-  <h1>Primera</h1>
-  <h2>Comunión</h2>
-  <p class="subnames">Ximena &amp; Gustavo</p>
-
-  <div class="wheat-divider">
-    <span class="line"></span>
-    <svg width="26" height="14" viewBox="0 0 26 14" fill="none" stroke="#b68a4e" stroke-width="0.9">
-      <path d="M13 13V2" stroke-linecap="round"/>
-      <path d="M13 4c-2-2-5-2-6 0M13 4c2-2 5-2 6 0M13 7c-2-2-5-2-6 0M13 7c2-2 5-2 6 0M13 10c-2-2-5-2-6 0M13 10c2-2 5-2 6 0" stroke-linecap="round"/>
-    </svg>
-    <span class="line right"></span>
-  </div>
-
+  <div class="header-accent"></div>
+  <div class="cross-symbol">†</div>
+  <h1>Recuerdo de nuestra</h1>
+  <h2>Primera Comunión</h2>
+  
   <div class="twins-wrapper">
     <div class="twin-profile">
-      <div class="avatar-frame"><img src="ximena.jpg" alt="Ximena"></div>
+      <div class="avatar-frame">
+        <img src="ximena.jpg" alt="Ximena">
+      </div>
       <div class="twin-name">Ximena</div>
     </div>
+    
     <div class="twin-profile">
-      <div class="avatar-frame"><img src="gustavo.jpg" alt="Gustavo"></div>
+      <div class="avatar-frame">
+        <img src="gustavo.jpg" alt="Gustavo">
+      </div>
       <div class="twin-name">Gustavo</div>
     </div>
   </div>
@@ -520,46 +474,31 @@
       <div class="countdown-item"><div class="countdown-number" id="seconds">00</div><div class="countdown-unit">Seg</div></div>
     </div>
   </div>
-
+  
   <div class="quote-section">
-    <span class="quote-mark">&#8220;</span>
     <p class="quote-text">
-      Señor, haz que este día sea el inicio de una vida llena de fe, guiada por tu amor
-      y protegida bajo tu luz divina. Que el pan de vida alimente siempre nuestros corazones.
+      "Señor, haz que este día sea el inicio de una vida llena de fe, guiada por tu amor y protegida bajo tu luz divina. Que el pan de vida alimente siempre nuestros corazones."
     </p>
   </div>
-
+  
   <div class="details-list">
     <div class="detail-block">
-      <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b68a4e" stroke-width="1.6"><rect x="3" y="5" width="18" height="16" rx="1.5"/><path d="M3 10h18M8 3v4M16 3v4" stroke-linecap="round"/></svg>
-      <div>
-        <p class="detail-label">Fecha del sacramento</p>
-        <p class="detail-value">Sábado, 25 de julio de 2026</p>
-      </div>
+      <p class="detail-label">📅 Fecha del Sacramento</p>
+      <p class="detail-value">Sábado, 25 de Julio de 2026</p>
     </div>
     <div class="detail-block">
-      <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b68a4e" stroke-width="1.6"><path d="M12 21s-7-6.5-7-11.5A7 7 0 0 1 19 9.5C19 14.5 12 21 12 21Z"/><circle cx="12" cy="9.5" r="2.3"/></svg>
-      <div>
-        <p class="detail-label">Lugar</p>
-        <p class="detail-value">Tulsa, Oklahoma</p>
-      </div>
+      <p class="detail-label">📍 Lugar</p>
+      <p class="detail-value">Tulsa, Oklahoma</p>
     </div>
     <div class="detail-block">
-      <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b68a4e" stroke-width="1.6"><path d="M12 20.5s-7.5-4.6-7.5-10A4.3 4.3 0 0 1 12 7.2 4.3 4.3 0 0 1 19.5 10.5c0 5.4-7.5 10-7.5 10Z"/></svg>
-      <div>
-        <p class="detail-label">Padres</p>
-        <p class="detail-value">Leobardo Muñoz &amp; Lorena García Saldívar</p>
-      </div>
+      <p class="detail-label">🤍 Padres</p>
+      <p class="detail-value">Leobardo Muñoz y Lorena García Saldivar</p>
     </div>
     <div class="detail-block">
-      <svg class="detail-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#b68a4e" stroke-width="1.6"><circle cx="8.5" cy="12" r="4.2"/><circle cx="15.5" cy="12" r="4.2"/></svg>
-      <div>
-        <p class="detail-label">Padrinos</p>
-        <p class="detail-value">Ángel García Durán &amp; Rosa Elena García Saldívar</p>
-      </div>
+      <p class="detail-label">👤 Padrinos</p>
+      <p class="detail-value">Ángel García Durán y Rosa Elena García Saldivar</p>
     </div>
   </div>
-
   <div class="preview-section">
     <p class="preview-label">Un vistazo a nuestro día</p>
     <div class="memory-frame" id="memoryFrame">
@@ -569,17 +508,8 @@
     </div>
     <p class="preview-note">Esta foto va cambiando — la galería completa se actualiza aquí.</p>
   </div>
-
-  <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery" target="_blank" rel="noopener">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><rect x="3" y="5" width="18" height="14" rx="1.5"/><circle cx="8.5" cy="10.5" r="1.5"/><path d="M21 16l-5-4-4 3-3-2-5 4"/></svg>
-    Ver galería completa
-  </a>
-
-  <svg class="footer-ornament" viewBox="0 0 40 12" fill="none" stroke="#c9a869" stroke-width="0.8">
-    <line x1="0" y1="6" x2="15" y2="6"/>
-    <line x1="25" y1="6" x2="40" y2="6"/>
-    <circle cx="20" cy="6" r="3"/>
-  </svg>
+  <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery" target="_blank">📷 Ver Galería de Fotos</a>
+  
   <p class="footer-thanks">Gracias por acompañarnos en este día tan especial</p>
   <p class="footer-family">Familia Muñoz García</p>
 </div>
@@ -587,24 +517,42 @@
 <script>
   var music = document.getElementById("bgMusic");
   var btn = document.getElementById("musicBtn");
-  var musicIcon = document.getElementById("musicIcon");
-  var playing = false;
 
   function toggleMusic() {
     if (music.paused) {
-      music.play().catch(function(){});
-      playing = true;
-      musicIcon.innerHTML = '<rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/>';
+      music.play();
+      btn.innerText = "⏸️";
     } else {
       music.pause();
-      playing = false;
-      musicIcon.innerHTML = '<path d="M9 18V5l12-2v13" stroke-linecap="round" stroke-linejoin="round"/><circle cx="6" cy="18" r="3" stroke-linecap="round" stroke-linejoin="round"/><circle cx="18" cy="16" r="3" stroke-linecap="round" stroke-linejoin="round"/>';
+      btn.innerText = "🎵";
     }
   }
 
-  // Contador regresivo — 25 de julio de 2026
+  function iniciarMusicaAutomatica() {
+    if (music.paused) {
+      music.play().then(() => {
+        btn.innerText = "⏸️";
+        removerEscuchadores();
+      }).catch(error => {
+        console.log("Interacción requerida.");
+      });
+    }
+  }
+
+  document.addEventListener('click', iniciarMusicaAutomatica);
+  document.addEventListener('touchstart', iniciarMusicaAutomatica);
+  document.addEventListener('scroll', iniciarMusicaAutomatica);
+
+  function removerEscuchadores() {
+    document.removeEventListener('click', iniciarMusicaAutomatica);
+    document.removeEventListener('touchstart', iniciarMusicaAutomatica);
+    document.removeEventListener('scroll', iniciarMusicaAutomatica);
+  }
+
+  // Programación del Reloj para el 25 de Julio de 2026
   var targetDate = new Date("July 25, 2026 00:00:00").getTime();
-  var timerInterval = setInterval(function () {
+
+  var timerInterval = setInterval(function() {
     var now = new Date().getTime();
     var timeLeft = targetDate - now;
 
@@ -625,7 +573,8 @@
     document.getElementById("seconds").innerText = s < 10 ? "0" + s : s;
   }, 1000);
 
-  // ---------------------------------------------------------------
+
+// ---------------------------------------------------------------
   // RECUERDO ROTATIVO — trae TODAS las fotos de la carpeta de Drive
   // y las va mostrando una por una en bucle, sin importar cuántas sean.
   // ---------------------------------------------------------------
@@ -637,7 +586,7 @@
   // 3) Cada cuánto cambia la foto (milisegundos)
   const ROTATE_MS = 5000;
   // 4) Cuánto tiempo se reutiliza la lista guardada en el celular antes de volver a pedirla (minutos)
-  const CACHE_MINUTES = 10;
+  const CACHE_MINUTES = 30;
 
   async function obtenerFotosDeCarpeta(folderId, apiKey) {
     let archivos = [];
@@ -716,14 +665,27 @@
 
   window.addEventListener('DOMContentLoaded', iniciarRecuerdoRotativo);
 
-  // Ráfaga de confeti dorado — un único momento al cargar
-  function dispararConfeti() {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
-    confetti({ particleCount: 80, angle: 60, spread: 45, origin: { x: 0, y: 0.5 }, colors: ['#b68a4e', '#e8cd9a', '#fffefb'] });
-    confetti({ particleCount: 80, angle: 120, spread: 45, origin: { x: 1, y: 0.5 }, colors: ['#b68a4e', '#e8cd9a', '#fffefb'] });
+  // FUNCIÓN PARA DISPARAR UNA RÁFAGA DE CONFETI DORADO Y BLANCO
+  function dispararRafagaConfeti() {
+    confetti({
+      particleCount: 102,
+      angle: 60,
+      spread: 45,
+      origin: { x: 0, y: 0.5 },
+      colors: ['#c5a059', '#ffffff', '#fdfbf7']
+    });
+    confetti({
+      particleCount: 102,
+      angle: 120,
+      spread: 45,
+      origin: { x: 1, y: 0.5 },
+      colors: ['#c5a059', '#ffffff', '#fdfbf7']
+    });
   }
-  window.addEventListener('DOMContentLoaded', function () {
-    setTimeout(dispararConfeti, 1200);
+
+  window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(dispararRafagaConfeti, 1500);
+    setInterval(dispararRafagaConfeti, 5000);
   });
 </script>
 
