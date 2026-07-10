@@ -674,47 +674,66 @@
     const cacheKey = 'recuerdo_fotos_' + DRIVE_FOLDER_ID;
 
     let fotos = [];
+    let intervalId = null;
+    let enReproduccion = true;
+    let index = 0;
+    let mostrandoA = true;
 
-    var cacheado = null;
-    try { cacheado = JSON.parse(localStorage.getItem(cacheKey)); } catch (e) {}
-    if (cacheado && (Date.now() - cacheado.timestamp) < CACHE_MINUTES * 60 * 1000) {
-      fotos = cacheado.files || [];
+    // 1. Intentar cargar INSTANTÁNEAMENTE lo que ya esté guardado en el teléfono
+    try {
+      const cacheado = localStorage.getItem(cacheKey);
+      if (cacheado) {
+        fotos = JSON.parse(cacheado) || [];
+      }
+    } catch (e) {
+      console.error("Error leyendo caché inicial:", e);
     }
 
-    if (fotos.length === 0) {
-      try {
-        fotos = await obtenerFotosDeCarpeta(DRIVE_FOLDER_ID, DRIVE_API_KEY);
-        localStorage.setItem(cacheKey, JSON.stringify({ timestamp: Date.now(), files: fotos }));
-      } catch (e) {
-        console.error(e);
+    // 2. Si ya teníamos fotos guardadas, las mostramos de inmediato para eliminar esperas
+    if (fotos.length > 0) {
+      status.style.display = 'none';
+      imgA.src = urlFoto(fotos[0].id);
+      imgA.classList.add('active');
+      if (fotos.length > 1) comenzarBucle();
+    }
+
+    // 3. OPTIMIZACIÓN ACTIVA: Validar en segundo plano si la carpeta de Drive cambió
+    try {
+      const fotosNuevas = await obtenerFotosDeCarpeta(DRIVE_FOLDER_ID, DRIVE_API_KEY);
+      
+      // Comparamos si la cantidad de fotos o los IDs cambiaron
+      const cambioLaLista = fotos.length !== fotosNuevas.length || 
+                            JSON.stringify(fotos.map(f => f.id)) !== JSON.stringify(fotosNuevas.map(f => f.id));
+
+      if (cambioLaLista && fotosNuevas.length > 0) {
+        fotos = fotosNuevas;
+        localStorage.setItem(cacheKey, JSON.stringify(fotos)); // Guardamos la nueva lista
+
+        // Si la pantalla estaba vacía ("Cargando..."), inicializamos el contenedor
+        if (status.style.display !== 'none') {
+          status.style.display = 'none';
+          imgA.src = urlFoto(fotos[0].id);
+          imgA.classList.add('active');
+          if (fotos.length > 1 && !intervalId) comenzarBucle();
+        }
+      }
+    } catch (e) {
+      console.error("Error validando actualizaciones de Drive de fondo:", e);
+      // Si falla el internet o la API, el usuario ni se entera porque sigue viendo las fotos del caché
+      if (fotos.length === 0) {
+        status.textContent = 'Aún no hay fotos disponibles — vuelve a intentarlo más tarde.';
+        return;
       }
     }
 
-    if (!fotos || fotos.length === 0) {
-      status.textContent = 'Aún no hay fotos disponibles — vuelve a intentarlo más tarde.';
-      return;
-    }
-
-    status.style.display = 'none';
-
-    let index = 0;
-    let mostrandoA = true;
-    let intervalId = null;
-    let enReproduccion = true;
-
-    // Inicializar primera imagen
-    imgA.src = urlFoto(fotos[0].id);
-    imgA.classList.add('active');
-
     if (fotos.length === 1) {
-      btnPrev.style.display = 'none';
-      btnPlayPause.style.display = 'none';
-      btnNext.style.display = 'none';
+      ocultarControles();
       return;
     }
 
-    // Función unificada para cambiar de foto (dirección: 1 = adelante, -1 = atrás)
+    // Funciones de control de flujo y renderizado
     function cambiarFoto(direccion = 1) {
+      if (!fotos || fotos.length === 0) return;
       index = (index + direccion + fotos.length) % fotos.length;
       const siguienteUrl = urlFoto(fotos[index].id);
       const entra = mostrandoA ? imgB : imgA;
@@ -728,8 +747,8 @@
       mostrandoA = !mostrandoA;
     }
 
-    // Funciones para controlar el intervalo
     function comenzarBucle() {
+      if (intervalId) clearInterval(intervalId);
       intervalId = setInterval(function () {
         cambiarFoto(1);
       }, ROTATE_MS);
@@ -739,16 +758,19 @@
       clearInterval(intervalId);
     }
 
-    // Iniciar automáticamente al cargar la página
-    comenzarBucle();
+    function ocultarControles() {
+      btnPrev.style.display = 'none';
+      btnPlayPause.style.display = 'none';
+      btnNext.style.display = 'none';
+    }
 
-    // Eventos de los Botones
+    // Oyentes de eventos para los botones físicos añadidos
     btnPlayPause.addEventListener('click', function() {
       if (enReproduccion) {
         detenerBucle();
         btnPlayPause.innerText = "▶️";
       } else {
-        cambiarFoto(1); // Cambia inmediatamente al reactivar
+        cambiarFoto(1);
         comenzarBucle();
         btnPlayPause.innerText = "⏸️";
       }
@@ -756,11 +778,17 @@
     });
 
     btnNext.addEventListener('click', function() {
-      // Si está en reproducción, reiniciamos el cronómetro para evitar saltos abruptos
       if (enReproduccion) detenerBucle();
       cambiarFoto(1);
       if (enReproduccion) comenzarBucle();
     });
+
+    btnPrev.addEventListener('click', function() {
+      if (enReproduccion) detenerBucle();
+      cambiarFoto(-1);
+      if (enReproduccion) comenzarBucle();
+    });
+  }
 
     btnPrev.addEventListener('click', function() {
       if (enReproduccion) detenerBucle();
