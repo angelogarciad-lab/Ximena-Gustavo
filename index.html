@@ -338,6 +338,52 @@
     color: var(--ink-soft);
   }
 
+	
+/* Estilos de los controles del Recuerdo Rotativo */
+  .slider-controls {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .btn-control {
+    background: var(--gold-light);
+    border: 1px solid rgba(197, 160, 89, 0.3);
+    color: var(--dark-blue);
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 14px;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(197, 160, 89, 0.1);
+    transition: all 0.3s ease;
+  }
+
+  .btn-control:hover {
+    background: var(--dark-blue);
+    color: #ffffff;
+    border-color: var(--dark-blue);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(26, 38, 51, 0.15);
+  }
+
+  .btn-control:active {
+    transform: translateY(0);
+  }
+  
+  /* Botón de play/pausa un poco más destacado */
+  #playPauseBtn {
+    width: 50px;
+    height: 50px;
+    font-size: 16px;
+    background: #ffffff;
+    border-color: var(--gold);
+  }
 
   /* Botón Principal de Galería con brillo premium */
   .btn-gallery {
@@ -506,7 +552,13 @@
       <img id="memoryImgB" alt="Recuerdo del día">
       <p class="memory-status" id="memoryStatus">Cargando recuerdos…</p>
     </div>
-    <p class="preview-note">Esta foto va cambiando — la galería completa se actualiza aquí.</p>
+    <p class="preview-note">Esta foto va cambiando con toda la galería completa.</p>
+	<!-- NUEVO: Botones de control manual -->
+    <div class="slider-controls">
+      <button class="btn-control" id="prevBtn" title="Anterior">⏮️</button>
+      <button class="btn-control" id="playPauseBtn" title="Pausar / Reproducir">⏸️</button>
+      <button class="btn-control" id="nextBtn" title="Siguiente">⏭️</button>
+    </div>
   </div>
   <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery" target="_blank">📷 Ver Galería de Fotos</a>
   
@@ -616,6 +668,9 @@
     const imgA = document.getElementById('memoryImgA');
     const imgB = document.getElementById('memoryImgB');
     const status = document.getElementById('memoryStatus');
+    const btnPrev = document.getElementById('prevBtn');
+    const btnPlayPause = document.getElementById('playPauseBtn');
+    const btnNext = document.getElementById('nextBtn');
     const cacheKey = 'recuerdo_fotos_' + DRIVE_FOLDER_ID;
 
     let fotos = [];
@@ -644,23 +699,74 @@
 
     let index = 0;
     let mostrandoA = true;
+    let intervalId = null;
+    let enReproduccion = true;
+
+    // Inicializar primera imagen
     imgA.src = urlFoto(fotos[0].id);
     imgA.classList.add('active');
 
-    if (fotos.length === 1) return;
+    if (fotos.length === 1) {
+      btnPrev.style.display = 'none';
+      btnPlayPause.style.display = 'none';
+      btnNext.style.display = 'none';
+      return;
+    }
 
-    setInterval(function () {
-      index = (index + 1) % fotos.length;
-      const siguiente = urlFoto(fotos[index].id);
+    // Función unificada para cambiar de foto (dirección: 1 = adelante, -1 = atrás)
+    function cambiarFoto(direccion = 1) {
+      index = (index + direccion + fotos.length) % fotos.length;
+      const siguienteUrl = urlFoto(fotos[index].id);
       const entra = mostrandoA ? imgB : imgA;
       const sale  = mostrandoA ? imgA : imgB;
+
       entra.onload = function () {
         entra.classList.add('active');
         sale.classList.remove('active');
       };
-      entra.src = siguiente;
+      entra.src = siguienteUrl;
       mostrandoA = !mostrandoA;
-    }, ROTATE_MS);
+    }
+
+    // Funciones para controlar el intervalo
+    function comenzarBucle() {
+      intervalId = setInterval(function () {
+        cambiarFoto(1);
+      }, ROTATE_MS);
+    }
+
+    function detenerBucle() {
+      clearInterval(intervalId);
+    }
+
+    // Iniciar automáticamente al cargar la página
+    comenzarBucle();
+
+    // Eventos de los Botones
+    btnPlayPause.addEventListener('click', function() {
+      if (enReproduccion) {
+        detenerBucle();
+        btnPlayPause.innerText = "▶️";
+      } else {
+        cambiarFoto(1); // Cambia inmediatamente al reactivar
+        comenzarBucle();
+        btnPlayPause.innerText = "⏸️";
+      }
+      enReproduccion = !enReproduccion;
+    });
+
+    btnNext.addEventListener('click', function() {
+      // Si está en reproducción, reiniciamos el cronómetro para evitar saltos abruptos
+      if (enReproduccion) detenerBucle();
+      cambiarFoto(1);
+      if (enReproduccion) comenzarBucle();
+    });
+
+    btnPrev.addEventListener('click', function() {
+      if (enReproduccion) detenerBucle();
+      cambiarFoto(-1);
+      if (enReproduccion) comenzarBucle();
+    });
   }
 
   window.addEventListener('DOMContentLoaded', iniciarRecuerdoRotativo);
