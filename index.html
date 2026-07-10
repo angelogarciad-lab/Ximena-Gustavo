@@ -124,9 +124,7 @@
     margin-bottom: 35px;
   }
 
-  /* ---------------------------------------------------------- */
-  /* RETRATOS EN VENTANAL                                       */
-  /* ---------------------------------------------------------- */
+  /* RETRATOS EN VENTANAL */
   .twins-wrapper {
     display: flex;
     justify-content: center;
@@ -227,7 +225,7 @@
     line-height: 1.7;
   }
 
-  /* Lista de Detalles en formato Bloques de Lujo */
+  /* Lista de Detalles */
   .details-list {
     text-align: left;
     margin-bottom: 30px;
@@ -282,9 +280,7 @@
     line-height: 1.4;
   }
 
-  /* ---------------------------------------------------------- */
-  /* RECUERDO ROTATIVO (foto única desde Google Drive)            */
-  /* ---------------------------------------------------------- */
+  /* RECUERDO ROTATIVO */
   .preview-section { margin-bottom: 30px; }
   .preview-label {
     font-size: 10.5px;
@@ -336,7 +332,6 @@
     color: #a4b0be;
   }
   
-  /* Estilos de los controles del Recuerdo Rotativo */
   .slider-controls {
     display: flex;
     justify-content: center;
@@ -369,11 +364,6 @@
     box-shadow: 0 6px 15px rgba(26, 38, 51, 0.15);
   }
 
-  .btn-control:active {
-    transform: translateY(0);
-  }
-    
-  /* Botón de play/pausa un poco más destacado */
   #playPauseBtn {
     width: 50px;
     height: 50px;
@@ -382,7 +372,6 @@
     border-color: var(--gold);
   }
 
-  /* Botón Principal de Galería con brillo premium */
   .btn-gallery {
     display: inline-block;
     width: 100%;
@@ -432,9 +421,107 @@
     color: var(--dark-blue);
     letter-spacing: 1.5px;
     text-transform: uppercase;
+    margin-bottom: 30px;
   }
 
-  /* Control de música flotante elegante */
+  /* NUEVA SECCIÓN: FORMULARIO DE COMENTARIOS */
+  .comment-form-section {
+    background: var(--gold-light);
+    border: 1px solid rgba(197, 160, 89, 0.2);
+    padding: 20px;
+    border-radius: 20px;
+    margin: 25px 0;
+    text-align: left;
+  }
+  .comment-form-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 18px;
+    color: var(--dark-blue);
+    margin-bottom: 12px;
+    font-weight: 600;
+    text-align: center;
+  }
+  .input-field {
+    width: 100%;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+    border: 1px solid #dcdde1;
+    border-radius: 10px;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 13px;
+    color: var(--dark-blue);
+    outline: none;
+  }
+  .input-field:focus {
+    border-color: var(--gold);
+  }
+  textarea.input-field {
+    resize: none;
+    height: 70px;
+  }
+  .btn-submit-comment {
+    width: 100%;
+    background: var(--gold);
+    color: #white;
+    border: none;
+    padding: 12px;
+    border-radius: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  .btn-submit-comment:hover {
+    background: #b38f4d;
+  }
+
+  /* NUEVA SECCIÓN: MURO DE COMENTARIOS PUBLICADOS */
+  .comments-display-section {
+    text-align: left;
+    margin-top: 20px;
+    border-top: 1px dashed rgba(197, 160, 89, 0.4);
+    padding-top: 25px;
+  }
+  .comments-box-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 20px;
+    color: var(--dark-blue);
+    margin-bottom: 15px;
+    text-align: center;
+    letter-spacing: 1px;
+  }
+  .comment-card {
+    background: #ffffff;
+    border: 1px solid #eef1f5;
+    border-left: 3px solid var(--gold);
+    padding: 14px;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.02);
+  }
+  .comment-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  .comment-author {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--dark-blue);
+  }
+  .comment-date {
+    font-size: 10px;
+    color: #a4b0be;
+  }
+  .comment-text {
+    font-size: 13px;
+    color: #5a6575;
+    line-height: 1.4;
+  }
+
   .audio-control {
     position: fixed;
     bottom: 25px;
@@ -454,12 +541,8 @@
     border: 2px solid var(--gold);
     transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
   }
-    
-  .audio-control:hover {
-    transform: scale(1.1);
-  }
+  .audio-control:hover { transform: scale(1.1); }
 
-  /* KEYFRAMES ANIMACIONES */
   @keyframes fadeInUp {
     from { opacity: 0; transform: translateY(40px); }
     to { opacity: 1; transform: translateY(0); }
@@ -552,7 +635,6 @@
     </div>
     <p class="preview-note">Esta foto va cambiando con toda la galería completa.</p>
     
-    <!-- Botones de control manual -->
     <div class="slider-controls">
       <button class="btn-control" id="prevBtn" title="Anterior">⏮️</button>
       <button class="btn-control" id="playPauseBtn" title="Pausar / Reproducir">⏸️</button>
@@ -563,7 +645,24 @@
   <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery" target="_blank">📷 Ver Galería de Fotos</a>
   
   <p class="footer-thanks">Gracias por acompañarnos en este día tan especial..</p>
-  <p class="footer-family">Familia Muñoz García</p>
+  <p class="footer-family" id="fFamily">Familia Muñoz García</p>
+
+  <!-- FORMULARIO PARA DEJAR FELICITACIÓN -->
+  <div class="comment-form-section">
+    <p class="comment-form-title">Dejar una felicitación o comentario ✨</p>
+    <input type="text" id="commentorName" class="input-field" placeholder="Tu nombre" required>
+    <textarea id="commentorText" class="input-field" placeholder="Escribe tu mensaje aquí..." required></textarea>
+    <button class="btn-submit-comment" onclick="enviarComentario()">Enviar Mensaje</button>
+  </div>
+
+  <!-- MURO DE COMENTARIOS PUBLICADOS -->
+  <div class="comments-display-section">
+    <p class="comments-box-title">Felicitaciones recibidas</p>
+    <div id="commentsContainer">
+      <p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">Cargando mensajes...</p>
+    </div>
+  </div>
+
 </div>
 
 <script>
@@ -627,12 +726,17 @@
 
 
   // ---------------------------------------------------------------
-  // RECUERDO ROTATIVO — trae TODAS las fotos de la carpeta de Drive
+  // RECUERDO ROTATIVO — Google Drive
   // ---------------------------------------------------------------
-
   const DRIVE_API_KEY = 'AIzaSyAG7iRdGBfNcACAGOmQ9vG7hD2Z8b_tE_k';
   const DRIVE_FOLDER_ID = '1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi';
   const ROTATE_MS = 5000;
+
+  // ---------------------------------------------------------------
+  // URL DEL GOOGLE APPS SCRIPT (BASE DE DATOS EN EXCEL)
+  // ---------------------------------------------------------------
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzBjt3-UZvdoW1gSeeeDvupb3od4am0zvJUHaPhIjyUsn2Mmw-6mIGycwzRwU6pv1WHoA/exec';
+
 
   async function obtenerFotosDeCarpeta(folderId, apiKey) {
     let archivos = [];
@@ -673,7 +777,6 @@
     let index = 0;
     let mostrandoA = true;
 
-    // 1. Intentar cargar lo que ya esté guardado en el teléfono
     try {
       const cacheado = localStorage.getItem(cacheKey);
       if (cacheado) {
@@ -683,7 +786,6 @@
       console.error("Error leyendo caché inicial:", e);
     }
 
-    // 2. Si ya teníamos fotos, las mostramos DE INMEDIATO
     if (fotos.length > 0) {
       status.style.display = 'none';
       imgA.src = urlFoto(fotos[0].id);
@@ -691,7 +793,6 @@
       if (fotos.length > 1) comenzarBucle();
     }
 
-    // 3. Traer la lista real de Drive en segundo plano
     try {
       const fotosNuevas = await obtenerFotosDeCarpeta(DRIVE_FOLDER_ID, DRIVE_API_KEY);
       
@@ -705,7 +806,6 @@
           fotos = fotosNuevas;
           localStorage.setItem(cacheKey, JSON.stringify(fotos));
 
-          // Forzar renderizado si estaba vacío el visor
           if (esPrimerInicio || status.style.display !== 'none') {
             status.style.display = 'none';
             imgA.src = urlFoto(fotos[0].id);
@@ -718,7 +818,6 @@
       console.error("Error validando actualizaciones de Drive:", e);
     }
 
-    // 4. Si después de todo sigue vacío
     if (!fotos || fotos.length === 0) {
       status.textContent = 'Aún no hay fotos disponibles — vuelve a intentarlo más tarde.';
       return;
@@ -729,7 +828,6 @@
       return;
     }
 
-    // --- Funciones internas ---
     function cambiarFoto(direccion = 1) {
       if (!fotos || fotos.length === 0) return;
       index = (index + direccion + fotos.length) % fotos.length;
@@ -762,7 +860,6 @@
       btnNext.style.display = 'none';
     }
 
-    // --- Oyentes de eventos manuales ---
     btnPlayPause.addEventListener('click', function() {
       if (enReproduccion) {
         detenerBucle();
@@ -788,7 +885,98 @@
     });
   }
 
-  window.addEventListener('DOMContentLoaded', iniciarRecuerdoRotativo);
+  // ---------------------------------------------------------------
+  // LÓGICA DEL MURO DE COMENTARIOS CONECTADO A GOOGLE SHEETS
+  // ---------------------------------------------------------------
+  async function cargarComentarios() {
+    const container = document.getElementById('commentsContainer');
+    if (APPS_SCRIPT_URL === 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT') {
+      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#e74c3c;">Falta configurar la URL de Apps Script en el código.</p>';
+      return;
+    }
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL);
+      const data = await res.json();
+      
+      if (!data || data.length === 0) {
+        container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">Aún no hay felicitaciones. ¡Sé el primero en escribir!</p>';
+        return;
+      }
+
+      // Los ordenamos al revés para que salgan los más NUEVOS arriba
+      data.reverse();
+
+      container.innerHTML = '';
+      data.forEach(c => {
+        const card = document.createElement('div');
+        card.className = 'comment-card';
+        card.innerHTML = `
+          <div class="comment-header">
+            <span class="comment-author">${c.nombre}</span>
+            <span class="comment-date">${c.fecha}</span>
+          </div>
+          <p class="comment-text">${c.mensaje}</p>
+        `;
+        container.appendChild(card);
+      });
+    } catch(e) {
+      console.error(e);
+      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be;">No se pudieron cargar los mensajes.</p>';
+    }
+  }
+
+  async function enviarComentario() {
+    const nombreInput = document.getElementById('commentorName');
+    const mensajeInput = document.getElementById('commentorText');
+    const nombre = nombreInput.value.trim();
+    const mensaje = mensajeInput.value.trim();
+
+    if (!nombre || !mensaje) {
+      alert("Por favor, rellena ambos campos antes de enviar.");
+      return;
+    }
+
+    if (APPS_SCRIPT_URL === 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT') {
+      alert("Por favor configura la URL del script en el código.");
+      return;
+    }
+
+    try {
+      const btn = document.querySelector('.btn-submit-comment');
+      btn.innerText = "Enviando...";
+      btn.disabled = true;
+
+      await fetch(APPS_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors', // Evita problemas de CORS sencillos con Apps Script
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ nombre: nombre, mensaje: mensaje })
+      });
+
+      // Limpiamos los campos
+      nombreInput.value = '';
+      mensajeInput.value = '';
+      btn.innerText = "Enviar Mensaje";
+      btn.disabled = false;
+
+      // Animación de festejo al enviar comentario
+      window.confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+
+      // Recargamos el muro de comentarios para ver el nuevo
+      setTimeout(cargarComentarios, 1000);
+
+    } catch(e) {
+      alert("Hubo un error al enviar tu mensaje. Inténtalo de nuevo.");
+      console.error(e);
+    }
+  }
+
+
+  window.addEventListener('DOMContentLoaded', () => {
+    iniciarRecuerdoRotativo();
+    cargarComentarios();
+  });
 
   // Confeti dorado y blanco
   function dispararRafagaConfeti() {
