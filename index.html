@@ -407,61 +407,7 @@
     box-shadow: 0 15px 35px rgba(197, 160, 89, 0.35);
     transform: translateY(-3px);
   }
-/* NUEVO CONTENEDOR PARA LOS BOTONES DE FOTOS */
-  .gallery-buttons-container {
-    display: flex;
-    gap: 12px;
-    margin-bottom: 35px;
-    width: 100%;
-  }
 
-  .btn-gallery-action {
-    flex: 1;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    text-decoration: none;
-    padding: 16px 10px;
-    font-size: 11px;
-    font-weight: 600;
-    border-radius: 50px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    position: relative;
-    overflow: hidden;
-    transition: all 0.4s ease;
-  }
-
-  /* Botón Ver Galería (Estilo Oscuro Elegante) */
-  .btn-view {
-    background: linear-gradient(135deg, var(--dark-blue) 0%, #25364a 100%);
-    color: #ffffff;
-    box-shadow: 0 10px 25px rgba(26, 38, 51, 0.2);
-  }
-
-  .btn-view::after {
-    content: '';
-    position: absolute;
-    top: -50%;
-    left: -60%;
-    width: 30%;
-    height: 200%;
-    background: rgba(255, 255, 255, 0.2);
-    transform: rotate(30deg);
-    animation: automaticShine 4s infinite ease-in-out;
-  }
-
-  /* Botón Compartir Fotos (Estilo Dorado Llamativo) */
-  .btn-upload {
-    background: var(--gold-gradient);
-    color: #ffffff;
-    box-shadow: 0 10px 25px rgba(197, 160, 89, 0.25);
-  }
-
-  .btn-gallery-action:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 14px 30px rgba(197, 160, 89, 0.3);
-  }
   .footer-thanks {
     font-size: 13px;
     color: #9aa4b0;
@@ -696,22 +642,7 @@
     </div>
   </div>
 
- <!-- CONTENEDOR DE BOTONES DE GALERÍA Y CARGA -->
-  <div class="gallery-buttons-container">
-    <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery-action btn-view" target="_blank">
-      📷 Ver Galería
-    </a>
-    
-    <!-- Botón que activa la subida inmediata sin salir de la página -->
-    <button type="button" class="btn-gallery-action btn-upload" id="uploadTriggerBtn" onclick="document.getElementById('hiddenFileInput').click()">
-      ✨ Compartir mis Fotos
-    </button>
-    <!-- Selector de archivos oculto que acepta imágenes -->
-    <input type="file" id="hiddenFileInput" accept="image/*" style="display: none;" onchange="subirFotoAnonima(this)">
-  </div>
-  
-  <!-- Mensaje de estado de subida debajo de los botones -->
-  <p id="uploadStatusText" style="font-size:12px; color:var(--gold); font-weight:500; margin-top:-25px; margin-bottom:25px; display:none;"></p>
+  <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery" target="_blank">📷 Ver Galería de Fotos</a>
   
   <p class="footer-thanks">Gracias por acompañarnos en este día tan especial..</p>
   <p class="footer-family" id="fFamily">Familia Muñoz García</p>
@@ -958,22 +889,20 @@
   // ---------------------------------------------------------------
   // LÓGICA DEL MURO DE COMENTARIOS CONECTADO A GOOGLE SHEETS
   // ---------------------------------------------------------------
- function cargarComentarios() {
+ async function cargarComentarios() {
     const container = document.getElementById('commentsContainer');
     if (APPS_SCRIPT_URL === 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT' || APPS_SCRIPT_URL === '') {
-      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#e74c3c;">Falta configurar la URL de Apps Script.</p>';
+      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#e74c3c;">Falta configurar la URL de Apps Script en el código.</p>';
       return;
     }
 
-    // Nombre único para la función que procesará los datos devueltos
-    const callbackName = 'parsearComentariosGoogle';
-    
-    // Definimos la función globalmente para que Google la encuentre al responder
-    window[callbackName] = function(data) {
-      // Limpiamos la función global para mantener el código ordenado
-      delete window[callbackName];
-      document.getElementById('jsonpScriptCORS')?.remove();
-
+    try {
+      const res = await fetch(APPS_SCRIPT_URL);
+      if (!res.ok) throw new Error('Error en la red');
+      
+      const data = await res.json();
+      
+      // Filtramos cualquier registro totalmente vacío que se haya colado
       const comentariosValidos = data.filter(c => c.nombre || c.mensaje);
       
       if (!comentariosValidos || comentariosValidos.length === 0) {
@@ -981,9 +910,10 @@
         return;
       }
 
+      // Los ordenamos para que el último enviado aparezca al principio de la lista
       comentariosValidos.reverse();
+
       container.innerHTML = '';
-      
       comentariosValidos.forEach(c => {
         const card = document.createElement('div');
         card.className = 'comment-card';
@@ -996,18 +926,10 @@
         `;
         container.appendChild(card);
       });
-    };
-
-    // Creamos una etiqueta de script dinámica inyectándole el parámetro callback.
-    // Esto burla el bloqueo de CORS del navegador al 100%.
-    const script = document.createElement('script');
-    script.id = 'jsonpScriptCORS';
-    script.src = `${APPS_SCRIPT_URL}?callback=${callbackName}`;
-    script.onerror = function() {
+    } catch(e) {
+      console.error("Error al cargar comentarios:", e);
       container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">No se pudieron cargar los mensajes. Refresca la página.</p>';
-    };
-
-    document.body.appendChild(script);
+    }
   }
 
   async function enviarComentario() {
@@ -1021,100 +943,39 @@
       return;
     }
 
+    if (APPS_SCRIPT_URL === 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT') {
+      alert("Por favor configura la URL del script en el código.");
+      return;
+    }
+
     try {
       const btn = document.querySelector('.btn-submit-comment');
       btn.innerText = "Enviando...";
       btn.disabled = true;
 
-      // Enviamos como JSON limpio
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
+        mode: 'no-cors', // Evita problemas de CORS sencillos con Apps Script
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ nombre: nombre, mensaje: mensaje })
       });
 
+      // Limpiamos los campos
       nombreInput.value = '';
       mensajeInput.value = '';
       btn.innerText = "Enviar Mensaje";
       btn.disabled = false;
 
+      // Animación de festejo al enviar comentario
       window.confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
+
+      // Recargamos el muro de comentarios para ver el nuevo
       setTimeout(cargarComentarios, 1000);
 
     } catch(e) {
       alert("Hubo un error al enviar tu mensaje. Inténtalo de nuevo.");
       console.error(e);
     }
-  }
-
-  async function subirFotoAnonima(input) {
-    const file = input.files[0];
-    if (!file) return;
-
-    const statusText = document.getElementById('uploadStatusText');
-    const uploadBtn = document.getElementById('uploadTriggerBtn');
-    
-    statusText.style.display = 'block';
-    statusText.innerText = "⏳ Optimizando imagen...";
-    uploadBtn.disabled = true;
-    uploadBtn.style.opacity = "0.6";
-
-    const reader = new FileReader();
-    reader.onload = function (event) {
-      const img = new Image();
-      img.onload = async function () {
-        const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 1000; // Reducimos un poco más para máxima estabilidad y velocidad
-        let width = img.width;
-        let height = img.height;
-
-        if (width > MAX_WIDTH) {
-          height *= MAX_WIDTH / width;
-          width = MAX_WIDTH;
-        }
-        canvas.width = width;
-        canvas.height = height;
-
-        const ctx = canvas.getContext('2d');
-        ctx.drawImage(img, 0, 0, width, height);
-
-        // Obtenemos el texto base64 limpio de la foto reducida
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75).split(',')[1];
-        statusText.innerText = "🚀 Subiendo a tu carpeta de Drive... (No cierres la página)";
-
-        try {
-          // Enviamos los datos crudos en el cuerpo de la petición utilizando texto plano
-          const response = await fetch(APPS_SCRIPT_URL, {
-            method: 'POST',
-            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-            body: compressedBase64
-          });
-
-          const result = await response.json();
-
-          if (result.result === 'success') {
-            statusText.innerText = "✅ ¡Foto guardada en Google Drive! Gracias por compartir.";
-            statusText.style.color = "#2ed573";
-            if (window.confetti) window.confetti({ particleCount: 60, spread: 50 });
-          } else {
-            // Si el servidor de Google tira un error controlado, lo capturamos aquí
-            console.error("Error devuelto por Google:", result.error);
-            throw new Error(result.error);
-          }
-        } catch (err) {
-          console.error("Error en la conexión del fetch:", err);
-          statusText.innerText = "❌ Error en el servidor de Drive. Inténtalo de nuevo.";
-          statusText.style.color = "#ff4757";
-        } finally {
-          uploadBtn.disabled = false;
-          uploadBtn.style.opacity = "1";
-          input.value = ''; 
-          setTimeout(() => { statusText.style.display = 'none'; statusText.style.color = 'var(--gold)'; }, 6000);
-        }
-      };
-      img.src = event.target.result;
-    };
-    reader.readAsDataURL(file);
   }
 
 
@@ -1145,7 +1006,6 @@
     setTimeout(dispararRafagaConfeti, 1500);
     setInterval(dispararRafagaConfeti, 5000);
   });
-  
 </script>
 
 </body>
