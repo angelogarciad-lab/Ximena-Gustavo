@@ -407,7 +407,61 @@
     box-shadow: 0 15px 35px rgba(197, 160, 89, 0.35);
     transform: translateY(-3px);
   }
+/* NUEVO CONTENEDOR PARA LOS BOTONES DE FOTOS */
+  .gallery-buttons-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 35px;
+    width: 100%;
+  }
 
+  .btn-gallery-action {
+    flex: 1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 16px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 50px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  /* Botón Ver Galería (Estilo Oscuro Elegante) */
+  .btn-view {
+    background: linear-gradient(135deg, var(--dark-blue) 0%, #25364a 100%);
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(26, 38, 51, 0.2);
+  }
+
+  .btn-view::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 30%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(30deg);
+    animation: automaticShine 4s infinite ease-in-out;
+  }
+
+  /* Botón Compartir Fotos (Estilo Dorado Llamativo) */
+  .btn-upload {
+    background: var(--gold-gradient);
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(197, 160, 89, 0.25);
+  }
+
+  .btn-gallery-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(197, 160, 89, 0.3);
+  }
   .footer-thanks {
     font-size: 13px;
     color: #9aa4b0;
