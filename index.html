@@ -407,7 +407,61 @@
     box-shadow: 0 15px 35px rgba(197, 160, 89, 0.35);
     transform: translateY(-3px);
   }
+/* NUEVO CONTENEDOR PARA LOS BOTONES DE FOTOS */
+  .gallery-buttons-container {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 35px;
+    width: 100%;
+  }
 
+  .btn-gallery-action {
+    flex: 1;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    padding: 16px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 50px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.4s ease;
+  }
+
+  /* Botón Ver Galería (Estilo Oscuro Elegante) */
+  .btn-view {
+    background: linear-gradient(135deg, var(--dark-blue) 0%, #25364a 100%);
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(26, 38, 51, 0.2);
+  }
+
+  .btn-view::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -60%;
+    width: 30%;
+    height: 200%;
+    background: rgba(255, 255, 255, 0.2);
+    transform: rotate(30deg);
+    animation: automaticShine 4s infinite ease-in-out;
+  }
+
+  /* Botón Compartir Fotos (Estilo Dorado Llamativo) */
+  .btn-upload {
+    background: var(--gold-gradient);
+    color: #ffffff;
+    box-shadow: 0 10px 25px rgba(197, 160, 89, 0.25);
+  }
+
+  .btn-gallery-action:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 14px 30px rgba(197, 160, 89, 0.3);
+  }
   .footer-thanks {
     font-size: 13px;
     color: #9aa4b0;
@@ -642,7 +696,22 @@
     </div>
   </div>
 
-  <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery" target="_blank">📷 Ver Galería de Fotos</a>
+ <!-- CONTENEDOR DE BOTONES DE GALERÍA Y CARGA -->
+  <div class="gallery-buttons-container">
+    <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery-action btn-view" target="_blank">
+      📷 Ver Galería
+    </a>
+    
+    <!-- Botón que activa la subida inmediata sin salir de la página -->
+    <button type="button" class="btn-gallery-action btn-upload" id="uploadTriggerBtn" onclick="document.getElementById('hiddenFileInput').click()">
+      ✨ Compartir mis Fotos
+    </button>
+    <!-- Selector de archivos oculto que acepta imágenes -->
+    <input type="file" id="hiddenFileInput" accept="image/*" style="display: none;" onchange="subirFotoAnonima(this)">
+  </div>
+  
+  <!-- Mensaje de estado de subida debajo de los botones -->
+  <p id="uploadStatusText" style="font-size:12px; color:var(--gold); font-weight:500; margin-top:-25px; margin-bottom:25px; display:none;"></p>
   
   <p class="footer-thanks">Gracias por acompañarnos en este día tan especial..</p>
   <p class="footer-family" id="fFamily">Familia Muñoz García</p>
