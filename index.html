@@ -1069,6 +1069,19 @@
     setTimeout(dispararRafagaConfeti, 1500);
     setInterval(dispararRafagaConfeti, 5000);
   });
+  async function cargarFotosDelCarrusel() {
+  try {
+    // Le añadimos '?read=photos' para decirle al script que queremos imágenes y no comentarios
+    const response = await fetch(`${APPS_SCRIPT_URL}?read=photos`);
+    const fotos = await response.json();
+    
+    // Aquí va tu lógica actual para pintar las imágenes en las etiquetas <img> de tu carrusel
+    console.log("Fotos cargadas de ambas carpetas:", fotos);
+    
+  } catch (error) {
+    console.error("Error al obtener las fotos:", error);
+  }
+}
 </script>
 
 </body>
