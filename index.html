@@ -958,20 +958,22 @@
   // ---------------------------------------------------------------
   // LÓGICA DEL MURO DE COMENTARIOS CONECTADO A GOOGLE SHEETS
   // ---------------------------------------------------------------
- async function cargarComentarios() {
+ function cargarComentarios() {
     const container = document.getElementById('commentsContainer');
     if (APPS_SCRIPT_URL === 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT' || APPS_SCRIPT_URL === '') {
-      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#e74c3c;">Falta configurar la URL de Apps Script en el código.</p>';
+      container.innerHTML = '<p style="text-align:center; font-size:12px; color:#e74c3c;">Falta configurar la URL de Apps Script.</p>';
       return;
     }
 
-    try {
-      const res = await fetch(APPS_SCRIPT_URL);
-      if (!res.ok) throw new Error('Error en la red');
-      
-      const data = await res.json();
-      
-      // Filtramos cualquier registro totalmente vacío que se haya colado
+    // Nombre único para la función que procesará los datos devueltos
+    const callbackName = 'parsearComentariosGoogle';
+    
+    // Definimos la función globalmente para que Google la encuentre al responder
+    window[callbackName] = function(data) {
+      // Limpiamos la función global para mantener el código ordenado
+      delete window[callbackName];
+      document.getElementById('jsonpScriptCORS')?.remove();
+
       const comentariosValidos = data.filter(c => c.nombre || c.mensaje);
       
       if (!comentariosValidos || comentariosValidos.length === 0) {
@@ -979,10 +981,9 @@
         return;
       }
 
-      // Los ordenamos para que el último enviado aparezca al principio de la lista
       comentariosValidos.reverse();
-
       container.innerHTML = '';
+      
       comentariosValidos.forEach(c => {
         const card = document.createElement('div');
         card.className = 'comment-card';
@@ -995,10 +996,18 @@
         `;
         container.appendChild(card);
       });
-    } catch(e) {
-      console.error("Error al cargar comentarios:", e);
+    };
+
+    // Creamos una etiqueta de script dinámica inyectándole el parámetro callback.
+    // Esto burla el bloqueo de CORS del navegador al 100%.
+    const script = document.createElement('script');
+    script.id = 'jsonpScriptCORS';
+    script.src = `${APPS_SCRIPT_URL}?callback=${callbackName}`;
+    script.onerror = function() {
       container.innerHTML = '<p style="text-align:center; font-size:12px; color:#a4b0be; font-style:italic;">No se pudieron cargar los mensajes. Refresca la página.</p>';
-    }
+    };
+
+    document.body.appendChild(script);
   }
 
   async function enviarComentario() {
