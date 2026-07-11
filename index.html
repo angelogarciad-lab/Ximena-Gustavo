@@ -1012,39 +1012,85 @@
       return;
     }
 
-    if (APPS_SCRIPT_URL === 'PEGA_AQUI_TU_URL_DE_APPS_SCRIPT') {
-      alert("Por favor configura la URL del script en el código.");
-      return;
-    }
-
     try {
       const btn = document.querySelector('.btn-submit-comment');
       btn.innerText = "Enviando...";
       btn.disabled = true;
 
+      // Enviamos como JSON limpio
       await fetch(APPS_SCRIPT_URL, {
         method: 'POST',
-        //mode: 'no-cors', // Evita problemas de CORS sencillos con Apps Script
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' }, 
         body: JSON.stringify({ nombre: nombre, mensaje: mensaje })
       });
 
-      // Limpiamos los campos
       nombreInput.value = '';
       mensajeInput.value = '';
       btn.innerText = "Enviar Mensaje";
       btn.disabled = false;
 
-      // Animación de festejo al enviar comentario
       window.confetti({ particleCount: 50, spread: 60, origin: { y: 0.8 } });
-
-      // Recargamos el muro de comentarios para ver el nuevo
       setTimeout(cargarComentarios, 1000);
 
     } catch(e) {
       alert("Hubo un error al enviar tu mensaje. Inténtalo de nuevo.");
       console.error(e);
     }
+  }
+
+  async function subirFotoAnonima(input) {
+    const file = input.files[0];
+    if (!file) return;
+
+    const statusText = document.getElementById('uploadStatusText');
+    const uploadBtn = document.getElementById('uploadTriggerBtn');
+    
+    statusText.style.display = 'block';
+    statusText.innerText = "⏳ Procesando imagen...";
+    uploadBtn.disabled = true;
+    uploadBtn.style.opacity = "0.6";
+
+    const reader = new FileReader();
+    reader.onload = async function (e) {
+      const base64Data = e.target.result.split(',')[1];
+      statusText.innerText = "🚀 Subiendo foto a la galería... (No cierres la página)";
+
+      try {
+        // Estructuramos el cuerpo como un JSON de texto plano para evitar bloqueos CORS previos al vuelo (Preflight)
+        const payload = {
+          fileData: base64Data,
+          mimeType: file.type,
+          filename: 'Invitado_' + Date.now() + '_' + file.name
+        };
+
+        const response = await fetch(APPS_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+
+        if (result.result === 'success') {
+          statusText.innerText = "✅ ¡Foto subida con éxito! Gracias por compartir.";
+          statusText.style.color = "#2ed573";
+          window.confetti({ particleCount: 60, spread: 50 });
+        } else {
+          throw new Error(result.error);
+        }
+      } catch (err) {
+        console.error(err);
+        statusText.innerText = "❌ Error al subir la imagen. Inténtalo de nuevo.";
+        statusText.style.color = "#ff4757";
+      } finally {
+        uploadBtn.disabled = false;
+        uploadBtn.style.opacity = "1";
+        input.value = ''; 
+        setTimeout(() => { statusText.style.display = 'none'; statusText.style.color = 'var(--gold)'; }, 5000);
+      }
+    };
+    
+    reader.readAsDataURL(file);
   }
 
 
@@ -1075,58 +1121,7 @@
     setTimeout(dispararRafagaConfeti, 1500);
     setInterval(dispararRafagaConfeti, 5000);
   });
-  async function subirFotoAnonima(input) {
-    const file = input.files[0];
-    if (!file) return;
-
-    const statusText = document.getElementById('uploadStatusText');
-    const uploadBtn = document.getElementById('uploadTriggerBtn');
-    
-    statusText.style.display = 'block';
-    statusText.innerText = "⏳ Procesando imagen...";
-    uploadBtn.disabled = true;
-    uploadBtn.style.opacity = "0.6";
-
-    const reader = new FileReader();
-    reader.onload = async function (e) {
-      const base64Data = e.target.result.split(',')[1];
-      statusText.innerText = "🚀 Subiendo foto a la galería... (No cierres la página)";
-
-      try {
-        // Creamos los parámetros estructurados para el Apps Script
-        const urlParams = new URLSearchParams();
-        urlParams.append('fileData', base64Data);
-        urlParams.append('mimeType', file.type);
-        urlParams.append('filename', 'Invitado_' + Date.now() + '_' + file.name);
-
-        const response = await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          body: urlParams
-        });
-
-        const result = await response.json();
-
-        if (result.result === 'success') {
-          statusText.innerText = "✅ ¡Foto subida con éxito! Gracias por compartir.";
-          statusText.style.color = "#2ed573";
-          window.confetti({ particleCount: 60, spread: 50 });
-        } else {
-          throw new Error(result.error);
-        }
-      } catch (err) {
-        console.error(err);
-        statusText.innerText = "❌ Error al subir la imagen. Inténtalo de nuevo.";
-        statusText.style.color = "#ff4757";
-      } finally {
-        uploadBtn.disabled = false;
-        uploadBtn.style.opacity = "1";
-        input.value = ''; // Resetea el input
-        setTimeout(() => { statusText.style.display = 'none'; statusText.style.color = 'var(--gold)'; }, 5000);
-      }
-    };
-    
-    reader.readAsDataURL(file);
-  }
+  
 </script>
 
 </body>
