@@ -1046,7 +1046,7 @@
     const uploadBtn = document.getElementById('uploadTriggerBtn');
     
     statusText.style.display = 'block';
-    statusText.innerText = "⏳ Optimizando imagen para Drive...";
+    statusText.innerText = "⏳ Optimizando imagen...";
     uploadBtn.disabled = true;
     uploadBtn.style.opacity = "0.6";
 
@@ -1054,9 +1054,8 @@
     reader.onload = function (event) {
       const img = new Image();
       img.onload = async function () {
-        // Creamos un lienzo (canvas) para reducir el tamaño si la foto es gigante
         const canvas = document.createElement('canvas');
-        const MAX_WIDTH = 1200; // Tamaño ideal para web y recuerdos rápidos
+        const MAX_WIDTH = 1000; // Reducimos un poco más para máxima estabilidad y velocidad
         let width = img.width;
         let height = img.height;
 
@@ -1070,16 +1069,16 @@
         const ctx = canvas.getContext('2d');
         ctx.drawImage(img, 0, 0, width, height);
 
-        // Convertimos la imagen optimizada a Base64 ligero (calidad 0.8)
-        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.8).split(',')[1];
-        statusText.innerText = "🚀 Subiendo directamente a Google Drive... (No cierres la página)";
+        // Obtenemos el texto base64 limpio de la foto reducida
+        const compressedBase64 = canvas.toDataURL('image/jpeg', 0.75).split(',')[1];
+        statusText.innerText = "🚀 Subiendo a tu carpeta de Drive... (No cierres la página)";
 
         try {
-          // Enviamos los datos ordenados mediante una petición limpia
-          const response = await fetch(`${APPS_SCRIPT_URL}?filename=${encodeURIComponent('Invitado_' + Date.now() + '.jpg')}&mimeType=image/jpeg`, {
+          // Enviamos los datos crudos en el cuerpo de la petición utilizando texto plano
+          const response = await fetch(APPS_SCRIPT_URL, {
             method: 'POST',
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-            body: 'fileData=' + encodeURIComponent(compressedBase64)
+            headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+            body: compressedBase64
           });
 
           const result = await response.json();
@@ -1089,10 +1088,12 @@
             statusText.style.color = "#2ed573";
             if (window.confetti) window.confetti({ particleCount: 60, spread: 50 });
           } else {
+            // Si el servidor de Google tira un error controlado, lo capturamos aquí
+            console.error("Error devuelto por Google:", result.error);
             throw new Error(result.error);
           }
         } catch (err) {
-          console.error(err);
+          console.error("Error en la conexión del fetch:", err);
           statusText.innerText = "❌ Error en el servidor de Drive. Inténtalo de nuevo.";
           statusText.style.color = "#ff4757";
         } finally {
