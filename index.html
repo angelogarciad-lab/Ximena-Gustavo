@@ -698,7 +698,7 @@
 
   <!-- CONTENEDOR DE BOTONES DE GALERÍA Y CARGA DEFINITIVO -->
   <div class="gallery-buttons-container">
-    <a href="https://drive.google.com/drive/folders/1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi?usp=drive_link" class="btn-gallery-action btn-view" target="_blank">
+    <a href="https://drive.google.com/drive/folders/1uvJLGUaL5OVNXxkFE_LPeBhHpEQuaRl5qbJEaEWC9rCHt5Vkg9g4zO5amrw6wC5SB6FHW2EU?usp=drive_link" class="btn-gallery-action btn-view" target="_blank">
       📷 Ver Galería
     </a>
     
@@ -792,7 +792,7 @@
   // RECUERDO ROTATIVO — Google Drive
   // ---------------------------------------------------------------
   const DRIVE_API_KEY = 'AIzaSyAG7iRdGBfNcACAGOmQ9vG7hD2Z8b_tE_k';
-  const DRIVE_FOLDER_ID = '1S3Cx1xljBJBqW_2jx8jv1lbDIbgWFPpi';
+  const DRIVE_FOLDER_ID = '1uvJLGUaL5OVNXxkFE_LPeBhHpEQuaRl5qbJEaEWC9rCHt5Vkg9g4zO5amrw6wC5SB6FHW2EU';
   const ROTATE_MS = 5000;
 
   // ---------------------------------------------------------------
@@ -1069,19 +1069,7 @@
     setTimeout(dispararRafagaConfeti, 1500);
     setInterval(dispararRafagaConfeti, 5000);
   });
-  async function cargarFotosDelCarrusel() {
-  try {
-    // Le añadimos '?read=photos' para decirle al script que queremos imágenes y no comentarios
-    const response = await fetch(`${APPS_SCRIPT_URL}?read=photos`);
-    const fotos = await response.json();
-    
-    // Aquí va tu lógica actual para pintar las imágenes en las etiquetas <img> de tu carrusel
-    console.log("Fotos cargadas de ambas carpetas:", fotos);
-    
-  } catch (error) {
-    console.error("Error al obtener las fotos:", error);
-  }
-}
+  
 </script>
 
 </body>
