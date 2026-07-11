@@ -1046,51 +1046,58 @@
     const uploadBtn = document.getElementById('uploadTriggerBtn');
     
     statusText.style.display = 'block';
-    statusText.innerText = "⏳ Procesando imagen...";
+    statusText.innerText = "⏳ Procesando e Iniciando subida...";
     uploadBtn.disabled = true;
     uploadBtn.style.opacity = "0.6";
 
-    const reader = new FileReader();
-    reader.onload = async function (e) {
-      const base64Data = e.target.result.split(',')[1];
-      statusText.innerText = "🚀 Subiendo foto a la galería... (No cierres la página)";
+    try {
+      // 1. Configurar los metadatos del archivo para Google Drive
+      const metadata = {
+        name: 'Invitado_' + Date.now() + '_' + file.name,
+        mimeType: file.type,
+        parents: [DRIVE_FOLDER_ID] // Usa la misma carpeta configurada arriba
+      };
 
-      try {
-        // Estructuramos el cuerpo como un JSON de texto plano para evitar bloqueos CORS previos al vuelo (Preflight)
-        const payload = {
-          fileData: base64Data,
-          mimeType: file.type,
-          filename: 'Invitado_' + Date.now() + '_' + file.name
-        };
+      // 2. Crear un cuerpo de datos mixto (Multipart) compatible con la API de Google
+      const formData = new FormData();
+      formData.append('metadata', new Blob([JSON.stringify(metadata)], { type: 'application/json' }));
+      formData.append('file', file);
 
-        const response = await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-          body: JSON.stringify(payload)
-        });
+      statusText.innerText = "🚀 Subiendo foto directamente a la galería... (No cierres la página)";
 
-        const result = await response.json();
+      // 3. Petición directa a la API de subida de Google Drive
+      const response = await fetch('https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&key=' + DRIVE_API_KEY, {
+        method: 'POST',
+        body: formData
+      });
 
-        if (result.result === 'success') {
-          statusText.innerText = "✅ ¡Foto subida con éxito! Gracias por compartir.";
-          statusText.style.color = "#2ed573";
-          window.confetti({ particleCount: 60, spread: 50 });
-        } else {
-          throw new Error(result.error);
-        }
-      } catch (err) {
-        console.error(err);
-        statusText.innerText = "❌ Error al subir la imagen. Inténtalo de nuevo.";
-        statusText.style.color = "#ff4757";
-      } finally {
-        uploadBtn.disabled = false;
-        uploadBtn.style.opacity = "1";
-        input.value = ''; 
-        setTimeout(() => { statusText.style.display = 'none'; statusText.style.color = 'var(--gold)'; }, 5000);
+      if (!response.ok) {
+        const errData = await response.json();
+        throw new Error(errData.error ? errData.error.message : 'Error en Drive');
       }
-    };
-    
-    reader.readAsDataURL(file);
+
+      // Éxito absoluto
+      statusText.innerText = "✅ ¡Foto compartida con éxito! Muchas gracias.";
+      statusText.style.color = "#2ed573";
+      
+      // Animación de festejo
+      if (window.confetti) {
+        window.confetti({ particleCount: 70, spread: 60 });
+      }
+
+    } catch (err) {
+      console.error("Error directo de Drive API:", err);
+      statusText.innerText = "❌ Error al subir. Intenta con otra foto o una más ligera.";
+      statusText.style.color = "#ff4757";
+    } finally {
+      uploadBtn.disabled = false;
+      uploadBtn.style.opacity = "1";
+      input.value = ''; 
+      setTimeout(() => { 
+        statusText.style.display = 'none'; 
+        statusText.style.color = 'var(--gold)'; 
+      }, 6000);
+    }
   }
 
 
